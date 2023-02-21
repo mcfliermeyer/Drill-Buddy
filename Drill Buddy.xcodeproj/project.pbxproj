@@ -11,6 +11,9 @@
 		B2780ADC299FA2B90055BF18 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2780ADB299FA2B90055BF18 /* ContentView.swift */; };
 		B2780ADE299FA2BB0055BF18 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2780ADD299FA2BB0055BF18 /* Assets.xcassets */; };
 		B2780AE1299FA2BB0055BF18 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2780AE0299FA2BB0055BF18 /* Preview Assets.xcassets */; };
+		B2780AEF29A4F9860055BF18 /* CustomARView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2780AEE29A4F9860055BF18 /* CustomARView.swift */; };
+		B2780AF129A4F9B80055BF18 /* CustomARViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2780AF029A4F9B80055BF18 /* CustomARViewRepresentable.swift */; };
+		B2780AF429A4FF6B0055BF18 /* SIMDExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2780AF329A4FF6B0055BF18 /* SIMDExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +22,9 @@
 		B2780ADB299FA2B90055BF18 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B2780ADD299FA2BB0055BF18 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B2780AE0299FA2BB0055BF18 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		B2780AEE29A4F9860055BF18 /* CustomARView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomARView.swift; sourceTree = "<group>"; };
+		B2780AF029A4F9B80055BF18 /* CustomARViewRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomARViewRepresentable.swift; sourceTree = "<group>"; };
+		B2780AF329A4FF6B0055BF18 /* SIMDExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SIMDExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +57,7 @@
 		B2780AD8299FA2B90055BF18 /* Drill Buddy */ = {
 			isa = PBXGroup;
 			children = (
+				B2780AE729A4F7DF0055BF18 /* Custom Views */,
 				B2780AD9299FA2B90055BF18 /* Drill_BuddyApp.swift */,
 				B2780ADB299FA2B90055BF18 /* ContentView.swift */,
 				B2780ADD299FA2BB0055BF18 /* Assets.xcassets */,
@@ -65,6 +72,24 @@
 				B2780AE0299FA2BB0055BF18 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		B2780AE729A4F7DF0055BF18 /* Custom Views */ = {
+			isa = PBXGroup;
+			children = (
+				B2780AF229A4FF350055BF18 /* Utility Functions */,
+				B2780AEE29A4F9860055BF18 /* CustomARView.swift */,
+				B2780AF029A4F9B80055BF18 /* CustomARViewRepresentable.swift */,
+			);
+			path = "Custom Views";
+			sourceTree = "<group>";
+		};
+		B2780AF229A4FF350055BF18 /* Utility Functions */ = {
+			isa = PBXGroup;
+			children = (
+				B2780AF329A4FF6B0055BF18 /* SIMDExtension.swift */,
+			);
+			path = "Utility Functions";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -139,6 +164,9 @@
 			files = (
 				B2780ADC299FA2B90055BF18 /* ContentView.swift in Sources */,
 				B2780ADA299FA2B90055BF18 /* Drill_BuddyApp.swift in Sources */,
+				B2780AF429A4FF6B0055BF18 /* SIMDExtension.swift in Sources */,
+				B2780AEF29A4F9860055BF18 /* CustomARView.swift in Sources */,
+				B2780AF129A4F9B80055BF18 /* CustomARViewRepresentable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
