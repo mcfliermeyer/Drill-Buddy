@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B255A25829A795EA00B322B0 /* Dot.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B255A25729A795EA00B322B0 /* Dot.usdz */; };
 		B2780ADA299FA2B90055BF18 /* Drill_BuddyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2780AD9299FA2B90055BF18 /* Drill_BuddyApp.swift */; };
 		B2780ADC299FA2B90055BF18 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2780ADB299FA2B90055BF18 /* ContentView.swift */; };
 		B2780ADE299FA2BB0055BF18 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2780ADD299FA2BB0055BF18 /* Assets.xcassets */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B255A25729A795EA00B322B0 /* Dot.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Dot.usdz; sourceTree = "<group>"; };
 		B2780AD6299FA2B90055BF18 /* Drill Buddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Drill Buddy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2780AD9299FA2B90055BF18 /* Drill_BuddyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drill_BuddyApp.swift; sourceTree = "<group>"; };
 		B2780ADB299FA2B90055BF18 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -57,6 +59,7 @@
 		B2780AD8299FA2B90055BF18 /* Drill Buddy */ = {
 			isa = PBXGroup;
 			children = (
+				B2780AF529A511170055BF18 /* ARAssets */,
 				B2780AE729A4F7DF0055BF18 /* Custom Views */,
 				B2780AD9299FA2B90055BF18 /* Drill_BuddyApp.swift */,
 				B2780ADB299FA2B90055BF18 /* ContentView.swift */,
@@ -90,6 +93,14 @@
 				B2780AF329A4FF6B0055BF18 /* SIMDExtension.swift */,
 			);
 			path = "Utility Functions";
+			sourceTree = "<group>";
+		};
+		B2780AF529A511170055BF18 /* ARAssets */ = {
+			isa = PBXGroup;
+			children = (
+				B255A25729A795EA00B322B0 /* Dot.usdz */,
+			);
+			path = ARAssets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -150,6 +161,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B255A25829A795EA00B322B0 /* Dot.usdz in Resources */,
 				B2780AE1299FA2BB0055BF18 /* Preview Assets.xcassets in Resources */,
 				B2780ADE299FA2BB0055BF18 /* Assets.xcassets in Resources */,
 			);
@@ -298,6 +310,7 @@
 				DEVELOPMENT_TEAM = 2Q2UM99HB6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Using your camera for AR";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -327,6 +340,7 @@
 				DEVELOPMENT_TEAM = 2Q2UM99HB6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Using your camera for AR";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

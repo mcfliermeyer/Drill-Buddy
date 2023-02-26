@@ -18,6 +18,7 @@ struct CustomARViewRepresentable: UIViewRepresentable {
         let config = ARWorldTrackingConfiguration()
         config.planeDetection = [.horizontal, .vertical]
         session.run(config)
+        arView.raycastFromCenterOfARView()
         return arView
     }
     
