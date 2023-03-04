@@ -27,7 +27,7 @@ class CustomArView: ARView {
 //extend arview for gestures
 extension ARView {
     
-    func raycastFromCenterOfARView() {
+    func placeCenterPlaneIndicator() {
         let model = try! Entity.loadModel(named: "Dot")
         let cameraAnchor = AnchorEntity(.camera)
         cameraAnchor.addChild(model)
@@ -45,29 +45,33 @@ extension ARView {
         let degreesToRotate: Float = 90.0
         let radians = degreesToRotate * Float.pi / 180.0
         model.transform.rotation *= simd_quatf(angle: radians, axis: SIMD3(x: 1, y: 0, z: 0))
-        
-        
-        
-//        guard let query = self.makeRaycastQuery(from: center, allowing: .existingPlaneInfinite, alignment: .any)
-//        else { return }
-//
-//        let repeatingRaycast = self.session.trackedRaycast(query){ results in
-//            guard let result = results.first
-//            else { return }
-//
-//            let model = try! Entity.loadModel(named: "Dot")
-//            model.setScale(SIMD3<Float>(0.5, 0.5, 0.5), relativeTo: nil)
-//
-//            let anchor = AnchorEntity(world: result.worldTransform)
-//            anchor.addChild(model)
-//
-//            self.scene.anchors.append(anchor)
-//        }
+    }
+    
+    func raycastFromCenterOfARView() {
+        guard let query = self.makeRaycastQuery(from: center, allowing: .estimatedPlane, alignment: .any)
+        else {
+            print("we aint!!")
+            return }
+        print("are we getting a query?")
+
+        let repeatingRaycast = self.session.trackedRaycast(query){ results in
+            guard let result = results.first
+            else {
+                print("no result")
+                return
+                
+            }
+
+            let model = try! Entity.loadModel(named: "Dot")
+            model.setScale(SIMD3<Float>(0.5, 0.5, 0.5), relativeTo: nil)
+
+            let anchor = AnchorEntity(world: result.worldTransform)
+            anchor.addChild(model)
+
+            self.scene.anchors.append(anchor)
+        }
         
         
     }
     
 }
-
-
-//extend arview for raycasting

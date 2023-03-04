@@ -23,6 +23,7 @@ struct ContentView: View {
                 Button("Start Measuring") {
                     //place anchor in center of screen with model of point
                     //use arView.function() here from arview extension
+                    arView.raycastFromCenterOfARView()
                 }
                     .padding()
                     .background(Color(red: 75/255, green: 119/255, blue: 201/255))
