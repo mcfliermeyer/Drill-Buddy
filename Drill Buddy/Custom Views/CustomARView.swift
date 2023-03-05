@@ -49,27 +49,20 @@ extension ARView {
     
     func raycastFromCenterOfARView() {
         guard let query = self.makeRaycastQuery(from: center, allowing: .estimatedPlane, alignment: .any)
-        else {
-            print("we aint!!")
-            return }
-        print("are we getting a query?")
+        else { return }
 
         let repeatingRaycast = self.session.trackedRaycast(query){ results in
             guard let result = results.first
-            else {
-                print("no result")
-                return
-                
-            }
-
-            let model = try! Entity.loadModel(named: "Dot")
-            model.setScale(SIMD3<Float>(0.5, 0.5, 0.5), relativeTo: nil)
-
-            let anchor = AnchorEntity(world: result.worldTransform)
-            anchor.addChild(model)
-
-            self.scene.anchors.append(anchor)
+            else { return }
         }
+        
+        let model = try! Entity.loadModel(named: "Dot")
+        model.setScale(SIMD3<Float>(0.5, 0.5, 0.5), relativeTo: nil)
+
+        let anchor = AnchorEntity(world: result.worldTransform)
+        anchor.addChild(model)
+
+        self.scene.anchors.append(anchor)
         
         
     }

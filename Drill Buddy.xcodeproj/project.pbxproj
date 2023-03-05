@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		B255A25829A795EA00B322B0 /* Dot.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B255A25729A795EA00B322B0 /* Dot.usdz */; };
+		B255A25C29B42EE100B322B0 /* FocusSquareSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B255A25A29B42EE100B322B0 /* FocusSquareSegment.swift */; };
+		B255A25D29B42EE100B322B0 /* FocusSquare.swift in Sources */ = {isa = PBXBuildFile; fileRef = B255A25B29B42EE100B322B0 /* FocusSquare.swift */; };
+		B255A26029B42F0800B322B0 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = B255A25F29B42F0800B322B0 /* LICENSE.txt */; };
 		B2780ADA299FA2B90055BF18 /* Drill_BuddyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2780AD9299FA2B90055BF18 /* Drill_BuddyApp.swift */; };
 		B2780ADC299FA2B90055BF18 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2780ADB299FA2B90055BF18 /* ContentView.swift */; };
 		B2780ADE299FA2BB0055BF18 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2780ADD299FA2BB0055BF18 /* Assets.xcassets */; };
@@ -19,6 +22,9 @@
 
 /* Begin PBXFileReference section */
 		B255A25729A795EA00B322B0 /* Dot.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Dot.usdz; sourceTree = "<group>"; };
+		B255A25A29B42EE100B322B0 /* FocusSquareSegment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FocusSquareSegment.swift; sourceTree = "<group>"; };
+		B255A25B29B42EE100B322B0 /* FocusSquare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FocusSquare.swift; sourceTree = "<group>"; };
+		B255A25F29B42F0800B322B0 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		B2780AD6299FA2B90055BF18 /* Drill Buddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Drill Buddy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2780AD9299FA2B90055BF18 /* Drill_BuddyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drill_BuddyApp.swift; sourceTree = "<group>"; };
 		B2780ADB299FA2B90055BF18 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -40,10 +46,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B255A25929B42EE100B322B0 /* Focus Square */ = {
+			isa = PBXGroup;
+			children = (
+				B255A25A29B42EE100B322B0 /* FocusSquareSegment.swift */,
+				B255A25B29B42EE100B322B0 /* FocusSquare.swift */,
+			);
+			path = "Focus Square";
+			sourceTree = "<group>";
+		};
+		B255A25E29B42F0800B322B0 /* LICENSE */ = {
+			isa = PBXGroup;
+			children = (
+				B255A25F29B42F0800B322B0 /* LICENSE.txt */,
+			);
+			path = LICENSE;
+			sourceTree = "<group>";
+		};
 		B2780ACD299FA2B90055BF18 = {
 			isa = PBXGroup;
 			children = (
 				B2780AD8299FA2B90055BF18 /* Drill Buddy */,
+				B255A25E29B42F0800B322B0 /* LICENSE */,
 				B2780AD7299FA2B90055BF18 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -80,9 +104,10 @@
 		B2780AE729A4F7DF0055BF18 /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
-				B2780AF229A4FF350055BF18 /* Utility Functions */,
 				B2780AEE29A4F9860055BF18 /* CustomARView.swift */,
 				B2780AF029A4F9B80055BF18 /* CustomARViewRepresentable.swift */,
+				B255A25929B42EE100B322B0 /* Focus Square */,
+				B2780AF229A4FF350055BF18 /* Utility Functions */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -161,6 +186,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B255A26029B42F0800B322B0 /* LICENSE.txt in Resources */,
 				B255A25829A795EA00B322B0 /* Dot.usdz in Resources */,
 				B2780AE1299FA2BB0055BF18 /* Preview Assets.xcassets in Resources */,
 				B2780ADE299FA2BB0055BF18 /* Assets.xcassets in Resources */,
@@ -175,6 +201,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2780ADC299FA2B90055BF18 /* ContentView.swift in Sources */,
+				B255A25D29B42EE100B322B0 /* FocusSquare.swift in Sources */,
+				B255A25C29B42EE100B322B0 /* FocusSquareSegment.swift in Sources */,
 				B2780ADA299FA2B90055BF18 /* Drill_BuddyApp.swift in Sources */,
 				B2780AF429A4FF6B0055BF18 /* SIMDExtension.swift in Sources */,
 				B2780AEF29A4F9860055BF18 /* CustomARView.swift in Sources */,
