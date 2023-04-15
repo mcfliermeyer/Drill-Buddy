@@ -9,34 +9,36 @@ import SwiftUI
 import RealityKit
 import ARKit
 
-struct ContentView: View {
-    @State private var arView = ARView(frame: .zero)
-    
+struct ContentView : View {
     var body: some View {
-        ZStack {
-            CustomARViewRepresentable(arView: $arView)
-                .ignoresSafeArea()
-            
-            VStack {
-                Spacer()
-                
-                Button("Start Measuring") {
-                    //place anchor in center of screen with model of point
-                    //use arView.function() here from arview extension
-                    arView.raycastFromCenterOfARView()
-                }
-                    .padding()
-                    .background(Color(red: 75/255, green: 119/255, blue: 201/255))
-                    .opacity(0.7)
-                    .foregroundColor(.black)
-                    .fontWeight(.bold)
-                    .cornerRadius(15)
-                    .dynamicTypeSize(.medium)
-                    
-                Spacer().frame(height: 30)
-            }
-        }
+        return ARViewContainer().edgesIgnoringSafeArea(.all)
     }
+}
+
+struct ARViewContainer: UIViewRepresentable {
+    
+    func makeUIView(context: Context) -> ARView {
+        
+        let arView = ARView(frame: .zero)
+        let config = ARWorldTrackingConfiguration()
+        
+        config.planeDetection = [.horizontal, .vertical]
+        arView.session.run(config)
+        
+        arView.addGestureRecognizer(UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTap)))
+        
+        context.coordinator.arView = arView
+        context.coordinator.setupUI()
+        
+        return arView
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator()
+    }
+    
+    func updateUIView(_ uiView: UIViewType, context: Context) {}
+    
 }
 
 struct ContentView_Previews: PreviewProvider {

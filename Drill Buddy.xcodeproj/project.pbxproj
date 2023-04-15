@@ -7,16 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B23ACD4D29E9D87C0022A2ED /* FocusEntity in Frameworks */ = {isa = PBXBuildFile; productRef = B23ACD4C29E9D87C0022A2ED /* FocusEntity */; };
 		B255A25829A795EA00B322B0 /* Dot.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B255A25729A795EA00B322B0 /* Dot.usdz */; };
 		B255A25C29B42EE100B322B0 /* FocusSquareSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B255A25A29B42EE100B322B0 /* FocusSquareSegment.swift */; };
 		B255A25D29B42EE100B322B0 /* FocusSquare.swift in Sources */ = {isa = PBXBuildFile; fileRef = B255A25B29B42EE100B322B0 /* FocusSquare.swift */; };
 		B255A26029B42F0800B322B0 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = B255A25F29B42F0800B322B0 /* LICENSE.txt */; };
+		B273F02329EB51A9000322E9 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B273F02229EB51A9000322E9 /* Coordinator.swift */; };
 		B2780ADA299FA2B90055BF18 /* Drill_BuddyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2780AD9299FA2B90055BF18 /* Drill_BuddyApp.swift */; };
 		B2780ADC299FA2B90055BF18 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2780ADB299FA2B90055BF18 /* ContentView.swift */; };
 		B2780ADE299FA2BB0055BF18 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2780ADD299FA2BB0055BF18 /* Assets.xcassets */; };
 		B2780AE1299FA2BB0055BF18 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2780AE0299FA2BB0055BF18 /* Preview Assets.xcassets */; };
-		B2780AEF29A4F9860055BF18 /* CustomARView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2780AEE29A4F9860055BF18 /* CustomARView.swift */; };
-		B2780AF129A4F9B80055BF18 /* CustomARViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2780AF029A4F9B80055BF18 /* CustomARViewRepresentable.swift */; };
 		B2780AF429A4FF6B0055BF18 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2780AF329A4FF6B0055BF18 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
@@ -25,13 +25,12 @@
 		B255A25A29B42EE100B322B0 /* FocusSquareSegment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FocusSquareSegment.swift; sourceTree = "<group>"; };
 		B255A25B29B42EE100B322B0 /* FocusSquare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FocusSquare.swift; sourceTree = "<group>"; };
 		B255A25F29B42F0800B322B0 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		B273F02229EB51A9000322E9 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		B2780AD6299FA2B90055BF18 /* Drill Buddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Drill Buddy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2780AD9299FA2B90055BF18 /* Drill_BuddyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drill_BuddyApp.swift; sourceTree = "<group>"; };
 		B2780ADB299FA2B90055BF18 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B2780ADD299FA2BB0055BF18 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B2780AE0299FA2BB0055BF18 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		B2780AEE29A4F9860055BF18 /* CustomARView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomARView.swift; sourceTree = "<group>"; };
-		B2780AF029A4F9B80055BF18 /* CustomARViewRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomARViewRepresentable.swift; sourceTree = "<group>"; };
 		B2780AF329A4FF6B0055BF18 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -40,6 +39,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B23ACD4D29E9D87C0022A2ED /* FocusEntity in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,8 +104,7 @@
 		B2780AE729A4F7DF0055BF18 /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
-				B2780AEE29A4F9860055BF18 /* CustomARView.swift */,
-				B2780AF029A4F9B80055BF18 /* CustomARViewRepresentable.swift */,
+				B273F02229EB51A9000322E9 /* Coordinator.swift */,
 				B255A25929B42EE100B322B0 /* Focus Square */,
 				B2780AF229A4FF350055BF18 /* Utility Functions */,
 			);
@@ -144,6 +143,9 @@
 			dependencies = (
 			);
 			name = "Drill Buddy";
+			packageProductDependencies = (
+				B23ACD4C29E9D87C0022A2ED /* FocusEntity */,
+			);
 			productName = "Drill Buddy";
 			productReference = B2780AD6299FA2B90055BF18 /* Drill Buddy.app */;
 			productType = "com.apple.product-type.application";
@@ -172,6 +174,9 @@
 				Base,
 			);
 			mainGroup = B2780ACD299FA2B90055BF18;
+			packageReferences = (
+				B23ACD4B29E9D87C0022A2ED /* XCRemoteSwiftPackageReference "FocusEntity" */,
+			);
 			productRefGroup = B2780AD7299FA2B90055BF18 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -200,13 +205,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B273F02329EB51A9000322E9 /* Coordinator.swift in Sources */,
 				B2780ADC299FA2B90055BF18 /* ContentView.swift in Sources */,
 				B255A25D29B42EE100B322B0 /* FocusSquare.swift in Sources */,
 				B255A25C29B42EE100B322B0 /* FocusSquareSegment.swift in Sources */,
 				B2780ADA299FA2B90055BF18 /* Drill_BuddyApp.swift in Sources */,
 				B2780AF429A4FF6B0055BF18 /* Extensions.swift in Sources */,
-				B2780AEF29A4F9860055BF18 /* CustomARView.swift in Sources */,
-				B2780AF129A4F9B80055BF18 /* CustomARViewRepresentable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -335,7 +339,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Drill Buddy/Preview Content\"";
-				DEVELOPMENT_TEAM = 2Q2UM99HB6;
+				DEVELOPMENT_TEAM = 8W2MLE97FK;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Using your camera for AR";
@@ -365,7 +369,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Drill Buddy/Preview Content\"";
-				DEVELOPMENT_TEAM = 2Q2UM99HB6;
+				DEVELOPMENT_TEAM = 8W2MLE97FK;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Using your camera for AR";
@@ -409,6 +413,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B23ACD4B29E9D87C0022A2ED /* XCRemoteSwiftPackageReference "FocusEntity" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/maxxfrazer/FocusEntity";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B23ACD4C29E9D87C0022A2ED /* FocusEntity */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B23ACD4B29E9D87C0022A2ED /* XCRemoteSwiftPackageReference "FocusEntity" */;
+			productName = FocusEntity;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B2780ACE299FA2B90055BF18 /* Project object */;
 }
