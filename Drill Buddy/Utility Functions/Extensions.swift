@@ -6,8 +6,6 @@
 //
 
 import SceneKit
-import Foundation
-import ARKit
 import RealityKit
 
 extension simd_float4x4 {

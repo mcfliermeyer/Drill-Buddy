@@ -7,10 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B23ACD4D29E9D87C0022A2ED /* FocusEntity in Frameworks */ = {isa = PBXBuildFile; productRef = B23ACD4C29E9D87C0022A2ED /* FocusEntity */; };
-		B255A25829A795EA00B322B0 /* Dot.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B255A25729A795EA00B322B0 /* Dot.usdz */; };
-		B255A25C29B42EE100B322B0 /* FocusSquareSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B255A25A29B42EE100B322B0 /* FocusSquareSegment.swift */; };
-		B255A25D29B42EE100B322B0 /* FocusSquare.swift in Sources */ = {isa = PBXBuildFile; fileRef = B255A25B29B42EE100B322B0 /* FocusSquare.swift */; };
 		B255A26029B42F0800B322B0 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = B255A25F29B42F0800B322B0 /* LICENSE.txt */; };
 		B273F02329EB51A9000322E9 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B273F02229EB51A9000322E9 /* Coordinator.swift */; };
 		B2780ADA299FA2B90055BF18 /* Drill_BuddyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2780AD9299FA2B90055BF18 /* Drill_BuddyApp.swift */; };
@@ -21,9 +17,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B255A25729A795EA00B322B0 /* Dot.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Dot.usdz; sourceTree = "<group>"; };
-		B255A25A29B42EE100B322B0 /* FocusSquareSegment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FocusSquareSegment.swift; sourceTree = "<group>"; };
-		B255A25B29B42EE100B322B0 /* FocusSquare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FocusSquare.swift; sourceTree = "<group>"; };
 		B255A25F29B42F0800B322B0 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		B273F02229EB51A9000322E9 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		B2780AD6299FA2B90055BF18 /* Drill Buddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Drill Buddy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -39,22 +32,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B23ACD4D29E9D87C0022A2ED /* FocusEntity in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		B255A25929B42EE100B322B0 /* Focus Square */ = {
-			isa = PBXGroup;
-			children = (
-				B255A25A29B42EE100B322B0 /* FocusSquareSegment.swift */,
-				B255A25B29B42EE100B322B0 /* FocusSquare.swift */,
-			);
-			path = "Focus Square";
-			sourceTree = "<group>";
-		};
 		B255A25E29B42F0800B322B0 /* LICENSE */ = {
 			isa = PBXGroup;
 			children = (
@@ -83,10 +66,10 @@
 		B2780AD8299FA2B90055BF18 /* Drill Buddy */ = {
 			isa = PBXGroup;
 			children = (
-				B2780AF529A511170055BF18 /* ARAssets */,
-				B2780AE729A4F7DF0055BF18 /* Custom Views */,
 				B2780AD9299FA2B90055BF18 /* Drill_BuddyApp.swift */,
 				B2780ADB299FA2B90055BF18 /* ContentView.swift */,
+				B2780AE729A4F7DF0055BF18 /* Custom Views */,
+				B2780AF229A4FF350055BF18 /* Utility Functions */,
 				B2780ADD299FA2BB0055BF18 /* Assets.xcassets */,
 				B2780ADF299FA2BB0055BF18 /* Preview Content */,
 			);
@@ -105,8 +88,6 @@
 			isa = PBXGroup;
 			children = (
 				B273F02229EB51A9000322E9 /* Coordinator.swift */,
-				B255A25929B42EE100B322B0 /* Focus Square */,
-				B2780AF229A4FF350055BF18 /* Utility Functions */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -117,14 +98,6 @@
 				B2780AF329A4FF6B0055BF18 /* Extensions.swift */,
 			);
 			path = "Utility Functions";
-			sourceTree = "<group>";
-		};
-		B2780AF529A511170055BF18 /* ARAssets */ = {
-			isa = PBXGroup;
-			children = (
-				B255A25729A795EA00B322B0 /* Dot.usdz */,
-			);
-			path = ARAssets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -144,7 +117,6 @@
 			);
 			name = "Drill Buddy";
 			packageProductDependencies = (
-				B23ACD4C29E9D87C0022A2ED /* FocusEntity */,
 			);
 			productName = "Drill Buddy";
 			productReference = B2780AD6299FA2B90055BF18 /* Drill Buddy.app */;
@@ -175,7 +147,6 @@
 			);
 			mainGroup = B2780ACD299FA2B90055BF18;
 			packageReferences = (
-				B23ACD4B29E9D87C0022A2ED /* XCRemoteSwiftPackageReference "FocusEntity" */,
 			);
 			productRefGroup = B2780AD7299FA2B90055BF18 /* Products */;
 			projectDirPath = "";
@@ -192,7 +163,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B255A26029B42F0800B322B0 /* LICENSE.txt in Resources */,
-				B255A25829A795EA00B322B0 /* Dot.usdz in Resources */,
 				B2780AE1299FA2BB0055BF18 /* Preview Assets.xcassets in Resources */,
 				B2780ADE299FA2BB0055BF18 /* Assets.xcassets in Resources */,
 			);
@@ -207,8 +177,6 @@
 			files = (
 				B273F02329EB51A9000322E9 /* Coordinator.swift in Sources */,
 				B2780ADC299FA2B90055BF18 /* ContentView.swift in Sources */,
-				B255A25D29B42EE100B322B0 /* FocusSquare.swift in Sources */,
-				B255A25C29B42EE100B322B0 /* FocusSquareSegment.swift in Sources */,
 				B2780ADA299FA2B90055BF18 /* Drill_BuddyApp.swift in Sources */,
 				B2780AF429A4FF6B0055BF18 /* Extensions.swift in Sources */,
 			);
@@ -413,25 +381,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		B23ACD4B29E9D87C0022A2ED /* XCRemoteSwiftPackageReference "FocusEntity" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/maxxfrazer/FocusEntity";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		B23ACD4C29E9D87C0022A2ED /* FocusEntity */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B23ACD4B29E9D87C0022A2ED /* XCRemoteSwiftPackageReference "FocusEntity" */;
-			productName = FocusEntity;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B2780ACE299FA2B90055BF18 /* Project object */;
 }

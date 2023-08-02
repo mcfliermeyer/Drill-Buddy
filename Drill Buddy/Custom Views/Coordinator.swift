@@ -4,8 +4,6 @@
 //
 //  Created by Mark Meyer on 4/15/23.
 //
-
-import Foundation
 import RealityKit
 import SwiftUI
 
@@ -17,7 +15,7 @@ class Coordinator {
     
     lazy var measurementButton: UIButton = {
         let button = UIButton(configuration: .filled())
-        button.setTitle("0.00", for: .normal)
+        button.setTitle("Start Measurement", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isUserInteractionEnabled = false
         return button
@@ -25,7 +23,7 @@ class Coordinator {
     
     lazy var resetButton: UIButton = {
         
-        let button = UIButton(configuration: .gray(), primaryAction: UIAction(handler: { [weak self] action in
+        let resetButton = UIButton(configuration: .gray(), primaryAction: UIAction(handler: { [weak self] action in
             
             guard let arView = self?.arView else { return }
             self?.startAnchor = nil
@@ -36,11 +34,9 @@ class Coordinator {
             
         }))
         
-        
-        
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Reset", for: .normal)
-        return button
+        resetButton.translatesAutoresizingMaskIntoConstraints = false
+        resetButton.setTitle("Reset", for: .normal)
+        return resetButton
         
     }()
     
@@ -48,39 +44,39 @@ class Coordinator {
         
         guard let arView = arView else { return }
         let tappedLocation = recognizer.location(in: arView)
-        
+
         let results = arView.raycast(from: tappedLocation, allowing: .estimatedPlane, alignment: .horizontal)
         if let result = results.first {
-            
+
             if startAnchor == nil {
-                
+
                 startAnchor = AnchorEntity(raycastResult: result)
                 let box = ModelEntity(mesh: MeshResource.generateBox(size: 0.01), materials: [SimpleMaterial(color: .green, isMetallic: true)])
                 startAnchor?.addChild(box)
-                
+
                 guard let startAnchor = startAnchor else {
                     return
                 }
-                
+
                 arView.scene.addAnchor(startAnchor)
-                
+
             } else if endAnchor == nil {
-               
+
                 endAnchor = AnchorEntity(raycastResult: result)
                 let box = ModelEntity(mesh: MeshResource.generateBox(size: 0.01), materials: [SimpleMaterial(color: .green, isMetallic: true)])
                 endAnchor?.addChild(box)
-                
+
                 guard let endAnchor = endAnchor,
                       let startAnchor = startAnchor
                 else {
                     return
                 }
-                
+
                 arView.scene.addAnchor(endAnchor)
-                
+
                 // calculate the distance
                 var distanceInInches = simd_distance(startAnchor.position(relativeTo: nil), endAnchor.position(relativeTo: nil)).fromMetersToInches()
-                
+
                 if distanceInInches < 12.0  {
                     measurementButton.setTitle(String(format: "%.1f inches", distanceInInches), for: .normal)
                     return
@@ -90,7 +86,7 @@ class Coordinator {
                 measurementButton.setTitle(String(format: "%.0f feet %.1f inches", feet, distanceInInches), for: .normal)
 
             }
-            
+
         }
     }
     
@@ -100,15 +96,16 @@ class Coordinator {
         
         let stackView = UIStackView(arrangedSubviews: [measurementButton, resetButton])
         stackView.axis = .horizontal
-        stackView.spacing = 8
+        stackView.spacing = 20
         stackView.distribution = .fillEqually
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
         arView.addSubview(stackView)
         
         stackView.centerXAnchor.constraint(equalTo: arView.centerXAnchor).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: arView.bottomAnchor, constant: -60).isActive = true
-        stackView.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: arView.bottomAnchor, constant: -180).isActive = true
+        stackView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        stackView.widthAnchor.constraint(greaterThanOrEqualToConstant: 180).isActive = true
         
     }
     

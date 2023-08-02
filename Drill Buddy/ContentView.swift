@@ -7,7 +7,6 @@
 
 import SwiftUI
 import RealityKit
-import ARKit
 
 struct ContentView : View {
     var body: some View {
@@ -20,10 +19,10 @@ struct ARViewContainer: UIViewRepresentable {
     func makeUIView(context: Context) -> ARView {
         
         let arView = ARView(frame: .zero)
-        let config = ARWorldTrackingConfiguration()
-        
-        config.planeDetection = [.horizontal, .vertical]
-        arView.session.run(config)
+//        let config = ARWorldTrackingConfiguration()
+//
+//        config.planeDetection = [.horizontal, .vertical]
+//        arView.session.run(config)
         
         arView.addGestureRecognizer(UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTap)))
         
