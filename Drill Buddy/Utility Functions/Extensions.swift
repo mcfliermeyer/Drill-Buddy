@@ -8,16 +8,30 @@
 import SceneKit
 import RealityKit
 
+extension Int {
+    
+    func toRadian() -> CGFloat {
+        
+        return CGFloat(self) * CGFloat.pi / 180
+        
+    }
+    
+}
+
 extension simd_float4x4 {
+    
     public var position: simd_float3 {
         return [columns.3.x, columns.3.y, columns.3.z]
     }
+    
 }
 
 extension Float {
+    
     func fromMetersToInches() -> Float {
         return self * 39.26
     }
+    
 }
 
 typealias Angle = Measurement<UnitAngle>
