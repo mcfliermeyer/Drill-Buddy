@@ -6,8 +6,6 @@
 //
 import RealityKit
 import SwiftUI
-import SceneKit
-import ARKit
 import Foundation
 
 class Coordinator {
@@ -147,7 +145,7 @@ class Coordinator {
 //        meshDes.positions = MeshBuffer(elements: vertices, indices: triangles)
         meshDes.positions = MeshBuffer(vertices)
         meshDes.primitives = .triangles(triangles)
-        let circleEntity = ModelEntity(mesh: try! .generate(from: [meshDes]), materials: [SimpleMaterial(color: .red, isMetallic: true)])
+        let circleEntity = ModelEntity(mesh: try! .generate(from: [meshDes]), materials: [SimpleMaterial(color: .red, isMetallic: false)])
         
         worldOriginAnchor.addChild(circleEntity)
         arView.scene.addAnchor(worldOriginAnchor)
@@ -156,21 +154,21 @@ class Coordinator {
     
     private func drawCircle() -> ([SIMD3<Float>], [UInt32]){
         
-        let angle: Float = 360
-        let triangleCount: Int = 100
-        let triangleAngle: Float = angle / Float(triangleCount)
+        let angle: Float = 180
+        let triangleCount: Int = 30
+        let triangleAngle: Float = (angle / Float(triangleCount))
         
-        let verticesCount = Int(triangleCount + 2)
+        let verticesCount = Int(triangleCount)
         
         var vertices: [SIMD3<Float>] {
             
             var vertex: [SIMD3<Float>] = [[0,0,0]]
             
-            for i in (0..<verticesCount) {
-                let x = cos(Float(i)/10 * triangleAngle)
-                let y = sin(Float(i)/10 * triangleAngle)
+            for i in (0 ... verticesCount) {
+                let x = round(cos( (Float(i) * triangleAngle).toRadian()) * 1000)/10000
+                let y = round(sin( (Float(i) * triangleAngle).toRadian()) * 1000)/10000
                 print("x: \(x) y: \(y)")
-                vertex.append([x/10, y/10, 0])
+                vertex.append([x, y, 0])
             }
             
             return vertex
@@ -178,9 +176,9 @@ class Coordinator {
         
         var triangles: [UInt32] {
             
-            var points: [UInt32] = Array(repeating: 0, count: triangleCount)
+            var points: [UInt32] = Array(repeating: 0, count: (verticesCount * 3))
             
-            for i in (0 ..< (triangleCount/3)) {
+            for i in (0 ..< verticesCount) {
 //                print(i)
                 points[3 * i + 0] = 0
                 points[3 * i + 1] = UInt32(i + 1)
@@ -190,10 +188,7 @@ class Coordinator {
             
             return points
         }
-        
         return (vertices, triangles)
-        
-        
     }
     
 }

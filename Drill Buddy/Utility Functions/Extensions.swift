@@ -10,9 +10,18 @@ import RealityKit
 
 extension Int {
     
-    func toRadian() -> CGFloat {
+    func toRadian() -> Float {
         
-        return CGFloat(self) * CGFloat.pi / 180
+        return Float(self) * Float.pi / 180
+        
+    }
+    
+}
+extension Float {
+    
+    func toRadian() -> Float {
+        
+        return Float(self) * Float.pi / 180
         
     }
     
