@@ -19,14 +19,12 @@ struct ARViewContainer: UIViewRepresentable {
     func makeUIView(context: Context) -> ARView {
         
         let arView = ARView(frame: .zero)
-//        let config = ARWorldTrackingConfiguration()
-//
-//        config.planeDetection = [.horizontal, .vertical]
-//        arView.session.run(config)
+        let archNode = ArchNode(arView: arView, radius: 0.8, color: .white, lineWidth: 0.05)
         
-        arView.addGestureRecognizer(UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTap)))
+//        arView.addGestureRecognizer(UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTap)))
         
         context.coordinator.arView = arView
+        context.coordinator.archNode = archNode
         context.coordinator.setupUI()
         
         return arView
@@ -36,7 +34,9 @@ struct ARViewContainer: UIViewRepresentable {
         Coordinator()
     }
     
-    func updateUIView(_ uiView: UIViewType, context: Context) {}
+    func updateUIView(_ uiView: ARView, context: Context) {
+        
+    }
     
 }
 

@@ -7,13 +7,15 @@
 import RealityKit
 import SwiftUI
 import Foundation
+import Combine
 
 class Coordinator {
     
     var arView: ARView?
+    var sceneObserver: Cancellable!
     var startAnchor: AnchorEntity?
     var endAnchor: AnchorEntity?
-    let archNode = ArchNode()
+    var archNode: ArchNode?
     
     
     lazy var measurementButton: UIButton = {
@@ -32,7 +34,7 @@ class Coordinator {
             self?.startAnchor = nil
             self?.endAnchor = nil
             
-            arView.scene.anchors.removeAll()
+//            arView.scene.anchors.removeAll()
             self?.measurementButton.setTitle("0.00", for: .normal)
             
         }))
@@ -94,11 +96,30 @@ class Coordinator {
 //        }
     }
     
+    func updateScene(on event: SceneEvents.Update) {
+        
+        guard let arView = arView else { return }
+        
+        guard let archNodeAnchor = arView.scene.anchors.first else { return }
+        
+        let translate = float4x4(
+                [1,0,0,0],
+                [0,1,0,0],
+                [0,0,1,0],
+                [0,0,-1,1]
+              )
+        
+        let final = arView.cameraTransform.matrix * translate
+        
+        archNodeAnchor.setTransformMatrix(final, relativeTo: nil)
+
+    }
+    
     func setupUI() {
         
         guard let arView = arView else { return }
         
-        displayGeometry()
+        sceneObserver = arView.scene.subscribe(to: SceneEvents.Update.self) { [unowned self] in self.updateScene(on: $0) }
         
         let stackView = UIStackView(arrangedSubviews: [measurementButton, resetButton])
         stackView.axis = .horizontal
@@ -114,81 +135,4 @@ class Coordinator {
         stackView.widthAnchor.constraint(greaterThanOrEqualToConstant: 180).isActive = true
         
     }
-    
-    private func displayGeometry() {
-        
-        guard let arView = arView else { return }
-        
-        let worldOriginAnchor = AnchorEntity(world: SIMD3(x: 0, y: 0, z: -0.85))
-        
-//        let positions: [SIMD3<Float>] = [
-//            [0,0,0], [0.1,0,0], [0,0.1,0], [0.1,0.1,0], [0.2,0,0], [0.2,0.1,0],
-//            [0.3,0,0], [0.3,0.1,0], [0.4,0,0], [0.4,0.1,0], [0.5,0,0]
-//        ]
-//
-//        let horizontalLineVertices: [UInt32] = [0,1,2, 1,3,2, 1,4,3, 4,5,3, 4,6,5, 6,7,5, 6,8,7, 8,9,7 ]
-//        //0,1,1,4,4,6,6,8    1,3,4,5,6,7,8,9    2,2,3,3,5,5,7,7
-//        var meshDescriptor = MeshDescriptor(name: "Horizontal")
-//
-//
-//        meshDescriptor.positions = MeshBuffer(positions)
-//        meshDescriptor.primitives = .triangles(horizontalLineVertices)//[how to connect positions from positions array, must be counter-clockwise to show up]
-        
-//        let modelEntity = ModelEntity(mesh: try! .generate(from: [meshDescriptor]), materials: [SimpleMaterial(color: .orange, isMetallic: false)])
-        
-//        worldOriginAnchor.addChild(modelEntity)
-//        arView.scene.addAnchor(worldOriginAnchor)
-        
-        let (vertices, triangles) = drawCircle()
-        
-        var meshDes = MeshDescriptor(name: "Circle")
-//        meshDes.positions = MeshBuffer(elements: vertices, indices: triangles)
-        meshDes.positions = MeshBuffer(vertices)
-        meshDes.primitives = .triangles(triangles)
-        let circleEntity = ModelEntity(mesh: try! .generate(from: [meshDes]), materials: [SimpleMaterial(color: .red, isMetallic: false)])
-        
-        worldOriginAnchor.addChild(circleEntity)
-        arView.scene.addAnchor(worldOriginAnchor)
-        
-    }
-    
-    private func drawCircle() -> ([SIMD3<Float>], [UInt32]){
-        
-        let angle: Float = 180
-        let triangleCount: Int = 30
-        let triangleAngle: Float = (angle / Float(triangleCount))
-        
-        let verticesCount = Int(triangleCount)
-        
-        var vertices: [SIMD3<Float>] {
-            
-            var vertex: [SIMD3<Float>] = [[0,0,0]]
-            
-            for i in (0 ... verticesCount) {
-                let x = round(cos( (Float(i) * triangleAngle).toRadian()) * 1000)/10000
-                let y = round(sin( (Float(i) * triangleAngle).toRadian()) * 1000)/10000
-                print("x: \(x) y: \(y)")
-                vertex.append([x, y, 0])
-            }
-            
-            return vertex
-        }//vertices
-        
-        var triangles: [UInt32] {
-            
-            var points: [UInt32] = Array(repeating: 0, count: (verticesCount * 3))
-            
-            for i in (0 ..< verticesCount) {
-//                print(i)
-                points[3 * i + 0] = 0
-                points[3 * i + 1] = UInt32(i + 1)
-                points[3 * i + 2] = UInt32(i + 2)
-//                points.append(UInt32(i))
-            }
-            
-            return points
-        }
-        return (vertices, triangles)
-    }
-    
 }
