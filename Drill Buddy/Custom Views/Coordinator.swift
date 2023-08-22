@@ -17,7 +17,6 @@ class Coordinator {
     var endAnchor: AnchorEntity?
     var archNode: ArchNode?
     var recentYawValues: [SIMD2<Float>] = []
-//    var recentYaw_2_2_Values: [Float] = []
     var recentPositions: [SIMD3<Float>] = []
     
     
@@ -107,62 +106,24 @@ class Coordinator {
         
         guard let arView = arView else { return }
         
-        guard let archNodeAnchor = arView.scene.anchors.filter({$0.name == "archNode"}).first else { return }
+        guard let archNodeAnchor = arView.scene.anchors.filter({$0.name == "archNode"}).first as? ArchNode else { return }
         
-        let translate = Transform(translation: [0,0,-1])
+        guard let worldTransform = raycastWorldTransform(arView: arView) else { return }
         
-        let query = arView.raycast(from: arView.center, allowing: .estimatedPlane, alignment: .any)
-        
-        guard let result = query.first else {
-            
-            let final = arView.cameraTransform.matrix * translate.matrix
-            //set archnode circle in front of camera
-            archNodeAnchor.setTransformMatrix(final, relativeTo: nil)
-            
-            return
-        }
-        
-        recentYawValues.append([(result.worldTransform[2][0]), (result.worldTransform[2][2])] )
-//        recentYaw_2_2_Values.append(result.worldTransform[2][2])
-        let avgYawValues = recentYawValues.reduce( SIMD2<Float>.zero, {$0 + $1} ) / Float(recentYawValues.count)
-//        let yaw_2_2 = recentYaw_2_2_Values.reduce( 0, {$0 + $1} ) / Float(recentYaw_2_2_Values.count)
-        
+        recentYawValues.append([(worldTransform.matrix[2][0]), (worldTransform.matrix[2][2])])
         recentYawValues = recentYawValues.suffix(80)
-//        recentYaw_2_2_Values = recentYaw_2_2_Values.suffix(80)
         
-        let world = result.worldTransform.translation
-        
-        let z: Float = {
-            let z = result.worldTransform.translation.z
-            return (z <= -0.3) ? z : z * -1
-        }()
-        
-        recentPositions.append([world.x,world.y,z])
-        
+        recentPositions.append([worldTransform.translation.x, worldTransform.translation.y, worldTransform.translation.z])
         recentPositions = recentPositions.suffix(20)
         
-        let averagePosition = recentPositions.reduce(SIMD3<Float>.zero, {$0 + $1} ) / Float(recentPositions.count)
+        let positionTransform = Transform(recentTranslations: recentPositions)
         
-        let positionTransform = Transform(translation: averagePosition)
-        print("x: ", positionTransform.translation.x)
-        
-        let yawTransform = Transform(yaw: atan2f(avgYawValues.x, avgYawValues.y))
+        let yawTransform = Transform(recentYawVectors: recentYawValues)
         
         let nodeTransform = positionTransform.matrix * yawTransform.matrix
         
-        print(nodeTransform.translation)
-        print("node: ", nodeTransform.translation)
+        archNodeAnchor.move(to: nodeTransform, relativeTo: nil, duration: 0.30)
         
-//        print("yawTransform: ", yawTransform.matrix)
-//        print("cameraMatrix: ", arView.cameraTransform.matrix)
-        
-//    newMatrix:  simd_float4x4([[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0], [0.0, 0.0, -0.1764827, 1.0]])
-//    yawTransform:  Transform(scale: SIMD3<Float>(1.0, 1.0, 1.0), rotation: simd_quatf(real: 0.7513167, imag: SIMD3<Float>(0.0, -0.65994185, 0.0)), translation: SIMD3<Float>(0.0, 0.0, 0.0))
-//    cameraMatrix:  simd_float4x4([[0.1285271, -0.14857908, 0.9805127, 0.0], [0.12559405, 0.9831907, 0.13252182, 0.0], [-0.9837211, 0.10611394, 0.1450273, 0.0], [0.114300154, 0.06341363, 0.41283953, 1.0]])
-//    zPosition:  simd_float4x4([[-0.95893365, 0.08606817, 0.27025697, 0.0], [0.12559405, 0.9831907, 0.13252182, 0.0], [-0.25430828, 0.1610223, -0.9536243, 0.0], [0.28790992, 0.044686355, 0.38724473, 1.0]])
-        
-        archNodeAnchor.move(to: nodeTransform, relativeTo: nil, duration: 0.35)
-
     }
     
     func setupUI() {
@@ -186,16 +147,18 @@ class Coordinator {
         
     }
     
-    func cast(arView: ARView) {
+    func raycastWorldTransform(arView: ARView) -> Transform? {
         
+        let query = arView.raycast(from: arView.center, allowing: .estimatedPlane, alignment: .any)
         
-//        print(result.worldTransform.orientation)
+        guard let result = query.first else {//no raycast being read
+            
+//            this is the spot to place the Open vs Close states of the circle. close circle if no raycast being read
+            
+            return nil
+        }
         
-//        let cast = arView.session.trackedRaycast(query, updateHandler: {
-//            results in
-//            print(results.first!.worldTransform.orientation)
-//        })
-        
+        return Transform(matrix: result.worldTransform)
     }
 }
 

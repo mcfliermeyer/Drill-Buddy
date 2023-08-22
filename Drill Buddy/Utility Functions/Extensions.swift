@@ -105,7 +105,7 @@ extension CGPoint {
     }
 }
 
-public extension Transform {
+extension Transform {
 
     // From: https://stackoverflow.com/questions/50236214/arkit-eulerangles-of-transform-matrix-4x4
     var eulerAngles: SIMD3<Float> {
@@ -117,5 +117,20 @@ public extension Transform {
             z: atan2(matrix[0][1], matrix[1][1])
         )
     }
+    
+    init(recentYawVectors: [SIMD2<Float>]) {
+        
+        let avgVector = recentYawVectors.reduce( SIMD2<Float>.zero, {$0 + $1} ) / Float(recentYawVectors.count)
+        
+        self.init(yaw: atan2f(avgVector.x, avgVector.y))
+    }
+    
+    init(recentTranslations: [SIMD3<Float>]) {
+        
+        let avgVector = recentTranslations.reduce( SIMD3<Float>.zero, {$0 + $1} ) / Float(recentTranslations.count)
+        
+        self.init(translation: avgVector)
+    }
 }
+
 

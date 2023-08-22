@@ -12,7 +12,7 @@ import ARKit
 class ArchNode: Entity, HasAnchoring {
     
     let arView: ARView
-    let radius: Float
+    var radius: Float
     let color: UIColor
     let lineWidth: Float
     
@@ -25,6 +25,10 @@ class ArchNode: Entity, HasAnchoring {
         
         self.displayGeometry(for: arView)
         
+    }
+    
+    func changeRadius(radius: Float) {
+        self.radius = radius
     }
     
     @MainActor required init() {
@@ -50,6 +54,7 @@ class ArchNode: Entity, HasAnchoring {
         }
         
         self.name = "node_anchor"
+        
         
         arView.scene.addAnchor(self)
         

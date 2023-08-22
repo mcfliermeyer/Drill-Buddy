@@ -11,10 +11,10 @@ import SceneKit
 extension ArchNode {
     
     enum Quadrant {
-        case topLeft(entity: ModelEntity)
-        case topRight(entity: ModelEntity)
-        case bottomRight(entity: ModelEntity)
-        case bottomLeft(entity: ModelEntity)
+        case topLeft
+        case topRight
+        case bottomRight
+        case bottomLeft
     }
     
     func drawArc(angle: Float, triangleDetailCount: Int) -> (MeshDescriptor, PhysicallyBasedMaterial){
