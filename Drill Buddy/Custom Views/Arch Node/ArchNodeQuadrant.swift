@@ -57,6 +57,7 @@ extension ArchNode {
             return points
         }
         
+        //high sheen material to help with solid color not visible without physically based material
         var material = PhysicallyBasedMaterial()
         material.baseColor = .init(tint: .black)
         material.sheen = .init(tint: .black)
