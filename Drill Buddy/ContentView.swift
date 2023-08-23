@@ -19,10 +19,12 @@ struct ARViewContainer: UIViewRepresentable {
     func makeUIView(context: Context) -> ARView {
         
         let arView = ARView(frame: .zero)
+        
         let archNode = ArchNode()
+        archNode.name = "archNode"
         
         arView.scene.addAnchor(archNode)
-        archNode.name = "archNode"
+        
         
 //        arView.addGestureRecognizer(UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTap)))
         

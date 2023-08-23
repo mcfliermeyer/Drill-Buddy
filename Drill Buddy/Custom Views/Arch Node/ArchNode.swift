@@ -11,22 +11,39 @@ import ARKit
 
 class ArchNode: Entity, HasAnchoring {
     
-    var arcQuadrants: [ArchNodeQuadrant] = []
-    
     required init() {
         super.init()
-        let space: Float = 0.01
         
         for i in 0 ..< 4 {
 
             let quadrant = ArchNodeQuadrant(angle: 90, triangleDetailCount: 9, quadrant: i, radius: 0.8, color: .white, lineWidth: 0.05)
             
+//            quadrant.openQuadrant()
+            
             self.addChild(quadrant)
-
-            arcQuadrants.append(quadrant)
-
         }
-        self.name = "archNode"
+        
+    }
+    
+    func openAllQuadrants() {
+        
+        self.children.forEach{ entity in
+            
+            guard let quad = entity as? ArchNodeQuadrant else { return }
+            quad.openQuadrant()
+            
+        }
+        
+    }
+    
+    func closeAllQuadrants() {
+        
+        self.children.forEach{ entity in
+            
+            guard let quad = entity as? ArchNodeQuadrant else { return }
+            quad.closeQuadrant()
+        }
+        
     }
     
     

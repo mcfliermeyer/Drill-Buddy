@@ -43,6 +43,20 @@ class ArchNodeQuadrant: Entity {
         
     }
     
+    func openQuadrant() {
+        let space: Float = 0.01
+        switch self.quadrant {
+        case .topRight: self.transform.translation = SIMD3<Float>(x: space, y: space, z: 0)
+        case .topLeft: self.transform.translation = SIMD3<Float>(x: -space, y: space, z: 0)
+        case .bottomLeft: self.transform.translation = SIMD3<Float>(x: -space, y: -space, z: 0)
+        case .bottomRight: self.transform.translation = SIMD3<Float>(x: space, y: -space, z: 0)
+        }
+    }
+    
+    func closeQuadrant() {
+        self.transform.translation = SIMD3<Float>(x: 0, y: 0, z: 0)
+    }
+    
     @MainActor required init() {
         fatalError("init() has not been implemented")
     }
