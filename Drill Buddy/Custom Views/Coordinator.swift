@@ -98,10 +98,6 @@ class Coordinator {
 //        }
     }
     
-//    func raycastHandler(results: []) {
-//
-//    }
-    
     func updateScene(on event: SceneEvents.Update) {
         
         guard let arView = arView else { return }
@@ -161,18 +157,3 @@ class Coordinator {
         return Transform(matrix: result.worldTransform)
     }
 }
-
-
-//orientation: simd_quatf(real: 0.7215003, imag: SIMD3<Float>(0.68775284, -0.05805765, 0.055342052))
-//orientationAngle: 1.5296595
-//orientationAxis: SIMD3<Float>(0.99326795, -0.08384815, 0.07992622)
-//transform: simd_float4x4([
-//    [0.98713315, 0.0, 0.15990052, 0.0],
-//                                [-0.15971722, 0.047866732, 0.98600155, 0.0],
-//                                                            [-0.007653915, -0.9988538, 0.047250833, 0.0],
-//                                                                                        [2.7568834, -0.7279191, -0.6314276, 1.0]
-//])
-//cos(0.98713315) = 0.99985158921
-//sin(0.15990052) = 0.00279078692
-//-sin(-0.007653915) = -0.00013358601
-//cos(0.047250833) =

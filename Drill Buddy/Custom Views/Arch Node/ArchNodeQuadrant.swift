@@ -8,13 +8,43 @@
 import RealityKit
 import SceneKit
 
-extension ArchNode {
+class ArchNodeQuadrant: Entity {
     
-    enum Quadrant {
+    let angle: Float
+    let triangleDetailCount: Int
+    let quadrant: Quadrant
+    let radius: Float
+    let color: UIColor
+    let lineWidth: Float
+    
+    enum Quadrant: Int {
+        case topRight = 0//goes counter clockwise for some reason
         case topLeft
-        case topRight
-        case bottomRight
         case bottomLeft
+        case bottomRight
+    }
+    
+    init(angle: Float, triangleDetailCount: Int, quadrant: Int, radius: Float, color: UIColor, lineWidth: Float) {
+        
+        self.angle = angle
+        self.triangleDetailCount = triangleDetailCount
+        self.quadrant = Quadrant(rawValue: quadrant) ?? .topRight
+        self.radius = radius
+        self.color = color
+        self.lineWidth = lineWidth
+        super.init()
+        
+        let (mesh, material) = self.drawArc(angle: 90, triangleDetailCount: 9)
+        let model = ModelEntity(mesh: try! .generate(from: [mesh]), materials: [material])
+        
+        model.transform.rotation = simd_quatf(angle: (90 * quadrant).toRadian(), axis: SIMD3(x: 0, y: 0, z: 1))
+        
+        self.addChild(model)
+        
+    }
+    
+    @MainActor required init() {
+        fatalError("init() has not been implemented")
     }
     
     func drawArc(angle: Float, triangleDetailCount: Int) -> (MeshDescriptor, PhysicallyBasedMaterial){
