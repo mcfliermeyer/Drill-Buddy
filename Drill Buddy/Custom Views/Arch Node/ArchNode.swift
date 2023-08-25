@@ -18,10 +18,12 @@ class ArchNode: Entity, HasAnchoring {
 
             let quadrant = ArchNodeQuadrant(angle: 90, triangleDetailCount: 9, quadrant: i, radius: 0.8, color: .white, lineWidth: 0.05)
             
-//            quadrant.openQuadrant()
-            
             self.addChild(quadrant)
         }
+        
+        let measurePoint = MeasurePoint(triangleDetailCount: 50, radius: 0.1, color: .green)
+        
+        self.addChild(measurePoint)
         
     }
     

@@ -106,7 +106,11 @@ class Coordinator {
         
         guard let worldTransform = raycastWorldTransform(arView: arView) else { return }
         
-        recentYawValues.append([(worldTransform.matrix[2][0]), (worldTransform.matrix[2][2])])
+        let yawX = round(worldTransform.matrix[2][0] * 10000000) / 10000000
+        let yawY = round(worldTransform.matrix[2][2] * 10000000) / 10000000
+        
+//        recentYawValues.append([(worldTransform.matrix[2][0]), (worldTransform.matrix[2][2])])
+        recentYawValues.append([(yawX), (yawY)])
         recentYawValues = recentYawValues.suffix(80)
         
         recentPositions.append([worldTransform.translation.x, worldTransform.translation.y, worldTransform.translation.z])

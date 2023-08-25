@@ -110,7 +110,6 @@ extension Transform {
     // From: https://stackoverflow.com/questions/50236214/arkit-eulerangles-of-transform-matrix-4x4
     var eulerAngles: SIMD3<Float> {
         let matrix = matrix
-        print(matrix[2])
         return .init(
             x: asin(-matrix[2][1]),
             y: atan2(matrix[2][0], matrix[2][2]),
@@ -119,10 +118,43 @@ extension Transform {
     }
     
     init(recentYawVectors: [SIMD2<Float>]) {
+        var count: Float = 0
+        let avgVector = recentYawVectors.reduce( SIMD2<Float>.zero, {
+            
+            if ( $1.x < -0.5 ) {
+
+                return $0 + SIMD2<Float>(x: 0, y: 0)
+
+            }
+            count += 1
+            return $0 + $1
+            
+        } ) / count
+        let x = avgVector.x
+        let y = avgVector.y 
+        print("avgYawVector: ", avgVector)
+        print("yaw: ", atan2f(x, y))
+//        if ((avgVector.x > 0 && avgVector.y < 0) || (avgVector.x < 0 && avgVector.y < 0)) {
+//            print("neg y")
+//            self.init(yaw: atan2f(avgVector.y , avgVector.x))
+//        }
+//        else {
+//            self.init(yaw: atan2f(avgVector.x, avgVector.y))
+//        }
+        print("we trying degrees x: ", x * 180/Float.pi)
+        print("we trying degrees y: ", y * 180/Float.pi)
+        if (x > 0) {
+            print("x>0")
+            print("SWITCH");print("SWITCH");print("SWITCH");print("SWITCH");print("SWITCH")
+            self.init(yaw: atan2f(x, y))
+        }
+        else {
+            print("x is less than 00000000000000000000000000000000000")
+            self.init(yaw: atan2f(-x, y))
+//            self.init(yaw: atanf(x/y))
+        }
         
-        let avgVector = recentYawVectors.reduce( SIMD2<Float>.zero, {$0 + $1} ) / Float(recentYawVectors.count)
         
-        self.init(yaw: atan2f(avgVector.x, avgVector.y))
     }
     
     init(recentTranslations: [SIMD3<Float>]) {

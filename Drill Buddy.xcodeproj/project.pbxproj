@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B22036A02A9687CB00ABBE3C /* MeasurePoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = B220369F2A9687CB00ABBE3C /* MeasurePoint.swift */; };
 		B255A26029B42F0800B322B0 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = B255A25F29B42F0800B322B0 /* LICENSE.txt */; };
 		B264D04D2A7AB5500082F141 /* ArchNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B264D04C2A7AB5500082F141 /* ArchNode.swift */; };
 		B264D04F2A7AB59C0082F141 /* ArchNodeQuadrant.swift in Sources */ = {isa = PBXBuildFile; fileRef = B264D04E2A7AB59C0082F141 /* ArchNodeQuadrant.swift */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B220369F2A9687CB00ABBE3C /* MeasurePoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurePoint.swift; sourceTree = "<group>"; };
 		B255A25F29B42F0800B322B0 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		B264D04C2A7AB5500082F141 /* ArchNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchNode.swift; sourceTree = "<group>"; };
 		B264D04E2A7AB59C0082F141 /* ArchNodeQuadrant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchNodeQuadrant.swift; sourceTree = "<group>"; };
@@ -55,6 +57,7 @@
 			children = (
 				B264D04C2A7AB5500082F141 /* ArchNode.swift */,
 				B264D04E2A7AB59C0082F141 /* ArchNodeQuadrant.swift */,
+				B220369F2A9687CB00ABBE3C /* MeasurePoint.swift */,
 			);
 			path = "Arch Node";
 			sourceTree = "<group>";
@@ -192,6 +195,7 @@
 				B264D04D2A7AB5500082F141 /* ArchNode.swift in Sources */,
 				B273F02329EB51A9000322E9 /* Coordinator.swift in Sources */,
 				B2780ADC299FA2B90055BF18 /* ContentView.swift in Sources */,
+				B22036A02A9687CB00ABBE3C /* MeasurePoint.swift in Sources */,
 				B264D04F2A7AB59C0082F141 /* ArchNodeQuadrant.swift in Sources */,
 				B2780ADA299FA2B90055BF18 /* Drill_BuddyApp.swift in Sources */,
 				B2780AF429A4FF6B0055BF18 /* Extensions.swift in Sources */,

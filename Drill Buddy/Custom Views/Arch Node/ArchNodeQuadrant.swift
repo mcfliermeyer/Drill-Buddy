@@ -28,7 +28,7 @@ class ArchNodeQuadrant: Entity {
         
         self.angle = angle
         self.triangleDetailCount = triangleDetailCount
-        self.quadrant = Quadrant(rawValue: quadrant) ?? .topRight
+        self.quadrant = Quadrant(rawValue: quadrant)!
         self.radius = radius
         self.color = color
         self.lineWidth = lineWidth
@@ -108,7 +108,7 @@ class ArchNodeQuadrant: Entity {
         material.emissiveColor = .init(color: color)
         material.emissiveIntensity = 10
         
-        var mesh = MeshDescriptor(name: "Circle")
+        var mesh = MeshDescriptor(name: "archNodeQuadrant")
         mesh.positions = MeshBuffer(vertices)
         mesh.primitives = .triangles(triangles)
 
