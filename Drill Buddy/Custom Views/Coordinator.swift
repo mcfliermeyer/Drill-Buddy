@@ -106,10 +106,9 @@ class Coordinator {
         
         guard let worldTransform = raycastWorldTransform(arView: arView) else { return }
         
-        let yawX = round(worldTransform.matrix[2][0] * 10000000) / 10000000
-        let yawY = round(worldTransform.matrix[2][2] * 10000000) / 10000000
+        let yawX = round(worldTransform.matrix[2][0] * 10000000) / 10000000//pick the decimal point its rounded to
+        let yawY = round(worldTransform.matrix[2][2] * 10000000) / 10000000//pick the decimal point its rounded to
         
-//        recentYawValues.append([(worldTransform.matrix[2][0]), (worldTransform.matrix[2][2])])
         recentYawValues.append([(yawX), (yawY)])
         recentYawValues = recentYawValues.suffix(80)
         
@@ -132,7 +131,8 @@ class Coordinator {
         
         sceneObserver = arView.scene.subscribe(to: SceneEvents.Update.self) { [unowned self] in self.updateScene(on: $0) }
         
-        let stackView = UIStackView(arrangedSubviews: [measurementButton, resetButton])
+//        let stackView = UIStackView(arrangedSubviews: [measurementButton, resetButton])
+        let stackView = UIStackView(arrangedSubviews: [])
         stackView.axis = .horizontal
         stackView.spacing = 20
         stackView.distribution = .fillEqually
@@ -141,9 +141,11 @@ class Coordinator {
         arView.addSubview(stackView)
         
         stackView.centerXAnchor.constraint(equalTo: arView.centerXAnchor).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: arView.bottomAnchor, constant: -180).isActive = true
-        stackView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        stackView.widthAnchor.constraint(greaterThanOrEqualToConstant: 180).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: arView.bottomAnchor).isActive = true
+        stackView.leftAnchor.constraint(equalTo: arView.leftAnchor).isActive = true
+        stackView.rightAnchor.constraint(equalTo: arView.rightAnchor).isActive = true
+        stackView.topAnchor.constraint(equalTo: arView.centerYAnchor, constant: UIScreen.main.bounds.height/4).isActive = true
+        stackView.backgroundColor = .systemBlue
         
     }
     

@@ -44,6 +44,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B22036A12A99027100ABBE3C /* Measure Point Control */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Measure Point Control";
+			sourceTree = "<group>";
+		};
 		B255A25E29B42F0800B322B0 /* LICENSE */ = {
 			isa = PBXGroup;
 			children = (
@@ -103,6 +110,7 @@
 		B2780AE729A4F7DF0055BF18 /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
+				B22036A12A99027100ABBE3C /* Measure Point Control */,
 				B264D04B2A7AB42A0082F141 /* Arch Node */,
 				B273F02229EB51A9000322E9 /* Coordinator.swift */,
 			);
