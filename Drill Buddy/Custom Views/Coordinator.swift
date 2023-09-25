@@ -47,19 +47,20 @@ class Coordinator {
         
     }()
     
-    @objc func handleTap(_ recognizer: UITapGestureRecognizer) {
-        
-        guard let arView = arView else { return }
-        
-//        let tappedLocation = recognizer.location(in: arView)
-        
-//        let results = arView.raycast(from: tappedLocation, allowing: .estimatedPlane, alignment: .any)
+//    @objc func handleTap(_ recognizer: UITapGestureRecognizer) {
+//
+//        guard let arView = arView else { return }
+//
+////        let tappedLocation = recognizer.location(in: arView)
+//
+//        let results = arView.raycast(from: arView.center, allowing: .estimatedPlane, alignment: .any)
+//
 //        if let result = results.first {
 //
 //            if startAnchor == nil {
 //
 //                startAnchor = AnchorEntity(raycastResult: result)
-////                let box = ModelEntity(mesh: MeshResource.generateBox(size: 0.01), materials: [SimpleMaterial(color: .green, isMetallic: true)])
+//                let box = ModelEntity(mesh: MeshResource.generateBox(size: 0.01), materials: [SimpleMaterial(color: .green, isMetallic: true)])
 //                startAnchor?.addChild(box)
 //
 //                guard let startAnchor = startAnchor else {
@@ -96,7 +97,7 @@ class Coordinator {
 //            }
 //
 //        }
-    }
+//    }
     
     func updateScene(on event: SceneEvents.Update) {
         
@@ -131,21 +132,18 @@ class Coordinator {
         
         sceneObserver = arView.scene.subscribe(to: SceneEvents.Update.self) { [unowned self] in self.updateScene(on: $0) }
         
-//        let stackView = UIStackView(arrangedSubviews: [measurementButton, resetButton])
-        let stackView = UIStackView(arrangedSubviews: [])
-        stackView.axis = .horizontal
-        stackView.spacing = 20
-        stackView.distribution = .fillEqually
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+//        let view = UIview(arrangedSubviews: [measurementButton, resetButton])
+        let pointView = PointControllingView()
+        pointView.translatesAutoresizingMaskIntoConstraints = false
         
-        arView.addSubview(stackView)
+        arView.addSubview(pointView)
         
-        stackView.centerXAnchor.constraint(equalTo: arView.centerXAnchor).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: arView.bottomAnchor).isActive = true
-        stackView.leftAnchor.constraint(equalTo: arView.leftAnchor).isActive = true
-        stackView.rightAnchor.constraint(equalTo: arView.rightAnchor).isActive = true
-        stackView.topAnchor.constraint(equalTo: arView.centerYAnchor, constant: UIScreen.main.bounds.height/4).isActive = true
-        stackView.backgroundColor = .systemBlue
+        pointView.centerXAnchor.constraint(equalTo: arView.centerXAnchor).isActive = true
+        pointView.bottomAnchor.constraint(equalTo: arView.bottomAnchor).isActive = true
+        pointView.leftAnchor.constraint(equalTo: arView.leftAnchor).isActive = true
+        pointView.rightAnchor.constraint(equalTo: arView.rightAnchor).isActive = true
+        pointView.topAnchor.constraint(equalTo: arView.centerYAnchor, constant: UIScreen.main.bounds.height/4).isActive = true
+        pointView.backgroundColor = .systemBlue
         
     }
     
@@ -158,8 +156,32 @@ class Coordinator {
 //            this is the spot to place the Open vs Close states of the circle. close circle if no raycast being read
             
             return nil
+            
         }
         
         return Transform(matrix: result.worldTransform)
+        
     }
+    
+}
+
+class PointControllingView: UIView {
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print("cart")
+        super.touchesBegan(touches, with: event)
+        
+    }
+    
+    override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print("fart")
+        super.touchesEnded(touches, with: event)
+        
+    }
+    
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print("Shart")
+        super.touchesCancelled(touches, with: event)
+    }
+    
 }

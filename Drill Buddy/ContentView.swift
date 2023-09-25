@@ -10,7 +10,9 @@ import RealityKit
 
 struct ContentView : View {
     var body: some View {
-        return ARViewContainer().edgesIgnoringSafeArea(.all)
+        
+        return ARViewContainer().edgesIgnoringSafeArea(.all).defersSystemGestures(on: .all)
+        
     }
 }
 
@@ -25,8 +27,8 @@ struct ARViewContainer: UIViewRepresentable {
         
         arView.scene.addAnchor(archNode)
         
-        
 //        arView.addGestureRecognizer(UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTap)))
+//        arView.addGestureRecognizer(UIGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleRelease)))
         
         context.coordinator.arView = arView
         context.coordinator.archNode = archNode
