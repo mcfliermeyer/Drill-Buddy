@@ -76,7 +76,7 @@ class MeasurePoint: Entity {
         material.baseColor = .init(tint: .black)
         material.sheen = .init(tint: .black)
         material.emissiveColor = .init(color: color)
-        material.emissiveIntensity = 1
+        material.emissiveIntensity = 10
         
         var mesh = MeshDescriptor(name: "MeasurePoint")
         mesh.positions = MeshBuffer(vertices)

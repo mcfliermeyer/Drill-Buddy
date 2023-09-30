@@ -13,116 +13,25 @@ class Coordinator {
     
     var arView: ARView?
     var sceneObserver: Cancellable!
-    var startAnchor: AnchorEntity?
-    var endAnchor: AnchorEntity?
     var archNode: ArchNode?
-    var recentYawValues: [SIMD2<Float>] = []
-    var recentPositions: [SIMD3<Float>] = []
-    
-    
-    lazy var measurementButton: UIButton = {
-        let button = UIButton(configuration: .filled())
-        button.setTitle("Start Measurement", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.isUserInteractionEnabled = false
-        return button
-    }()
-    
-    lazy var resetButton: UIButton = {
-        
-        let resetButton = UIButton(configuration: .gray(), primaryAction: UIAction(handler: { [weak self] action in
-            
-            guard let arView = self?.arView else { return }
-            self?.startAnchor = nil
-            self?.endAnchor = nil
-            
-//            arView.scene.anchors.removeAll()
-            self?.measurementButton.setTitle("0.00", for: .normal)
-            
-        }))
-        
-        resetButton.translatesAutoresizingMaskIntoConstraints = false
-        resetButton.setTitle("Reset", for: .normal)
-        return resetButton
-        
-    }()
-    
-//    @objc func handleTap(_ recognizer: UITapGestureRecognizer) {
-//
-//        guard let arView = arView else { return }
-//
-////        let tappedLocation = recognizer.location(in: arView)
-//
-//        let results = arView.raycast(from: arView.center, allowing: .estimatedPlane, alignment: .any)
-//
-//        if let result = results.first {
-//
-//            if startAnchor == nil {
-//
-//                startAnchor = AnchorEntity(raycastResult: result)
-//                let box = ModelEntity(mesh: MeshResource.generateBox(size: 0.01), materials: [SimpleMaterial(color: .green, isMetallic: true)])
-//                startAnchor?.addChild(box)
-//
-//                guard let startAnchor = startAnchor else {
-//                    return
-//                }
-//
-//                arView.scene.addAnchor(startAnchor)
-//
-//            } else if endAnchor == nil {
-//
-//                endAnchor = AnchorEntity(raycastResult: result)
-//                let box = ModelEntity(mesh: MeshResource.generateBox(size: 0.01), materials: [SimpleMaterial(color: .green, isMetallic: true)])
-//                endAnchor?.addChild(box)
-//
-//                guard let endAnchor = endAnchor,
-//                      let startAnchor = startAnchor
-//                else {
-//                    return
-//                }
-//
-//                arView.scene.addAnchor(endAnchor)
-//
-//                // calculate the distance
-//                var distanceInInches = simd_distance(startAnchor.position(relativeTo: nil), endAnchor.position(relativeTo: nil)).fromMetersToInches()
-//
-//                if distanceInInches < 12.0  {
-//                    measurementButton.setTitle(String(format: "%.1f inches", distanceInInches), for: .normal)
-//                    return
-//                }
-//                let feet = floor(distanceInInches / 12)
-//                distanceInInches = distanceInInches - (feet * 12)
-//                measurementButton.setTitle(String(format: "%.0f feet %.1f inches", feet, distanceInInches), for: .normal)
-//
-//            }
-//
-//        }
-//    }
+    var raycastResults: [matrix_float4x4] = []
+    var recentMeasurePointPositions: [SIMD3<Float>] = []
     
     func updateScene(on event: SceneEvents.Update) {
         
         guard let arView = arView else { return }
-        
+        /**
+         retrieve controller node to move
+         */
+        guard let controllerNodeAnchor = arView.scene.anchors.filter({$0.name == "controllerNode"}).first as? ArchNode else { return }
+        guard let controllerNodeTransform = createControllerNodeTransform(arView: arView) else { return }
+        controllerNodeAnchor.move(to: controllerNodeTransform, relativeTo: AnchorEntity(.camera), duration: 0.05)
+        /**
+         retrieve arch node to move
+         */
         guard let archNodeAnchor = arView.scene.anchors.filter({$0.name == "archNode"}).first as? ArchNode else { return }
-        
-        guard let worldTransform = raycastWorldTransform(arView: arView) else { return }
-        
-        let yawX = round(worldTransform.matrix[2][0] * 10000000) / 10000000//pick the decimal point its rounded to
-        let yawY = round(worldTransform.matrix[2][2] * 10000000) / 10000000//pick the decimal point its rounded to
-        
-        recentYawValues.append([(yawX), (yawY)])
-        recentYawValues = recentYawValues.suffix(80)
-        
-        recentPositions.append([worldTransform.translation.x, worldTransform.translation.y, worldTransform.translation.z])
-        recentPositions = recentPositions.suffix(20)
-        
-        let positionTransform = Transform(recentTranslations: recentPositions)
-        
-        let yawTransform = Transform(recentYawVectors: recentYawValues)
-        
-        let nodeTransform = positionTransform.matrix * yawTransform.matrix
-        
-        archNodeAnchor.move(to: nodeTransform, relativeTo: nil, duration: 0.30)
+        guard let positionTransform = createArchNodeTransform(arView: arView) else { return }
+        archNodeAnchor.move(to: positionTransform, relativeTo: nil, duration: 0.30)
         
     }
     
@@ -132,56 +41,42 @@ class Coordinator {
         
         sceneObserver = arView.scene.subscribe(to: SceneEvents.Update.self) { [unowned self] in self.updateScene(on: $0) }
         
-//        let view = UIview(arrangedSubviews: [measurementButton, resetButton])
-        let pointView = PointControllingView()
-        pointView.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    func createControllerNodeTransform(arView: ARView) -> Transform? {
         
-        arView.addSubview(pointView)
+        let bottomOfScreenTransform = Transform(translation: SIMD3(x: 0, y: -0.25, z: -0.6))
         
-        pointView.centerXAnchor.constraint(equalTo: arView.centerXAnchor).isActive = true
-        pointView.bottomAnchor.constraint(equalTo: arView.bottomAnchor).isActive = true
-        pointView.leftAnchor.constraint(equalTo: arView.leftAnchor).isActive = true
-        pointView.rightAnchor.constraint(equalTo: arView.rightAnchor).isActive = true
-        pointView.topAnchor.constraint(equalTo: arView.centerYAnchor, constant: UIScreen.main.bounds.height/4).isActive = true
-        pointView.backgroundColor = .systemBlue
+        //get camera transform and apply bottomOfScreenTransform to keep the node in the bottom of the screen
+        let controllerTransform = arView.cameraTransform.matrix * bottomOfScreenTransform.matrix
+        
+        //pull out translation/position from controller transform and keep most recent 12 positions
+        recentMeasurePointPositions.append(controllerTransform.translation)
+        recentMeasurePointPositions = recentMeasurePointPositions.suffix(12)
+        
+        //create transform that averages the most recent translations/positions
+        let recentMeasurePointPositionTransform = Transform(recentTranslations: recentMeasurePointPositions)
+        
+        //create transform that averages the most recent orientation
+        let recentMeasurePointOrientationTransform = Transform(rotation: controllerTransform.orientation)
+        let combineOrientationAndPosition = recentMeasurePointPositionTransform.matrix * recentMeasurePointOrientationTransform.matrix
+        
+        return Transform(matrix: combineOrientationAndPosition)
         
     }
     
-    func raycastWorldTransform(arView: ARView) -> Transform? {
-        
+    func createArchNodeTransform(arView: ARView) -> Transform? {
+        /**
+         raycast get and store most recent 80 results of world transform to move around archnode without jitters
+         */
         let query = arView.raycast(from: arView.center, allowing: .estimatedPlane, alignment: .any)
+        guard let result = query.first else { return nil }
+        raycastResults.append(result.worldTransform)
+        raycastResults = raycastResults.suffix(80)//keep only most recent results
         
-        guard let result = query.first else {//no raycast being read
-            
-//            this is the spot to place the Open vs Close states of the circle. close circle if no raycast being read
-            
-            return nil
-            
-        }
-        
-        return Transform(matrix: result.worldTransform)
+        return Transform(recentTransforms: raycastResults)
         
     }
     
 }
 
-class PointControllingView: UIView {
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("cart")
-        super.touchesBegan(touches, with: event)
-        
-    }
-    
-    override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("fart")
-        super.touchesEnded(touches, with: event)
-        
-    }
-    
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("Shart")
-        super.touchesCancelled(touches, with: event)
-    }
-    
-}

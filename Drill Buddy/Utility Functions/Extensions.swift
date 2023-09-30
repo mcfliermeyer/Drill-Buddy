@@ -121,29 +121,27 @@ extension Transform {
         )
     }
     
-    init(recentYawVectors: [SIMD2<Float>]) {
+    init(recentTransforms transforms: [matrix_float4x4]) {
+        //pull out most recent 20 positions and create Transform
+        let translations = transforms.map({$0.translation}).suffix(20)
+        let translationsAverage = translations.reduce(SIMD3<Float>.zero, {$0 + $1} ) / Float(translations.count)
+        let translationTranform = Transform(translation: translationsAverage)
         
-        var count: Float = 0
-        let avgVector = recentYawVectors.reduce( SIMD2<Float>.zero, {
-            
-            if ( $1.x < -0.5 ) {
-                return $0 + SIMD2<Float>(x: 0, y: 0)
-            }
-            
-            count += 1
-            return $0 + $1
-            
-        } ) / count
+        //pull out most recent 80 orientations (quatf) and create Transform
+        let orientations = transforms.map({$0.orientation}).suffix(80)
+        let anglesAverage = orientations.map({$0.angle}).reduce(0.0, {$0 + $1} ) / Float(orientations.count)
+        let axisAverage = orientations.map({$0.axis}).reduce(SIMD3<Float>.zero, {$0 + $1}) / Float(orientations.count)
+        let averageOrientationQauternion = simd_quatf(angle: anglesAverage, axis: axisAverage)
+        var orientationTransform = Transform(rotation: averageOrientationQauternion)
+        //flip node to face camera
+        orientationTransform.rotation *= simd_quatf(angle: 270.toRadian(), axis: SIMD3<Float>(1,0,0))
         
-        let x = avgVector.x
-        let y = avgVector.y
+        //multiply both transform matrices
+        let newTransform = translationTranform.matrix * orientationTransform.matrix
         
-        if (x > 0) {
-            self.init(yaw: atan2f(y, x))
-        }
-        else {
-            self.init(yaw: atanf(x/y))
-        }
+        self.init(matrix: newTransform)
+        
+        
         
     }
     
@@ -154,6 +152,7 @@ extension Transform {
         self.init(translation: avgVector)
         
     }
+    
 }
 
 
