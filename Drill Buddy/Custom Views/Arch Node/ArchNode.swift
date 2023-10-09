@@ -16,12 +16,12 @@ class ArchNode: Entity, HasAnchoring {
         
         for i in 0 ..< 4 {
 
-            let quadrant = ArchNodeQuadrant(angle: 90, triangleDetailCount: 9, quadrant: i, radius: 0.8, color: .white, lineWidth: 0.05)
+            let quadrant = ArchNodeQuadrant(angle: 90, triangleDetailCount: 9, quadrant: i, radius: 0.8, color: .white, lineWidth: 0.04)
             
             self.addChild(quadrant)
         }
         
-        let measurePoint = MeasurePoint(triangleDetailCount: 50, radius: 0.1, color: .green)
+        let measurePoint = MeasurePoint(triangleDetailCount: 50, radius: 0.1, color: .white)
         
         self.addChild(measurePoint)
         
