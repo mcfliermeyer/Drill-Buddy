@@ -123,7 +123,7 @@ extension Transform {
     
     init(recentTransforms transforms: [matrix_float4x4]) {
         //pull out most recent 20 positions and create Transform
-        let translations = transforms.map({$0.translation}).suffix(20)
+        let translations = transforms.map({$0.translation}).suffix(10)
         let translationsAverage = translations.reduce(SIMD3<Float>.zero, {$0 + $1} ) / Float(translations.count)
         let translationTranform = Transform(translation: translationsAverage)
         

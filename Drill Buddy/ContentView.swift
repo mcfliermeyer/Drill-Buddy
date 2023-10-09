@@ -33,6 +33,7 @@ struct ARViewContainer: UIViewRepresentable {
         
         context.coordinator.arView = arView
         context.coordinator.archNode = archNode
+        context.coordinator.controllerNode = controllerNode
         context.coordinator.setupUI()
         
         return arView

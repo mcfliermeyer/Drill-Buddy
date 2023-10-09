@@ -14,24 +14,25 @@ class Coordinator {
     var arView: ARView?
     var sceneObserver: Cancellable!
     var archNode: ArchNode?
+    var controllerNode: ArchNode?
     var raycastResults: [matrix_float4x4] = []
     var recentMeasurePointPositions: [SIMD3<Float>] = []
     
     func updateScene(on event: SceneEvents.Update) {
         
         guard let arView = arView else { return }
+        guard let controllerNode = controllerNode else { return }
+        guard let archNode = archNode else { return }
         /**
-         retrieve controller node to move
+         controller node to move with camera
          */
-        guard let controllerNodeAnchor = arView.scene.anchors.filter({$0.name == "controllerNode"}).first as? ArchNode else { return }
         guard let controllerNodeTransform = createControllerNodeTransform(arView: arView) else { return }
-        controllerNodeAnchor.move(to: controllerNodeTransform, relativeTo: AnchorEntity(.camera), duration: 0.05)
+        controllerNode.move(to: controllerNodeTransform, relativeTo: AnchorEntity(.camera), duration: 0.05)
         /**
-         retrieve arch node to move
+         arch node to move with raycast results
          */
-        guard let archNodeAnchor = arView.scene.anchors.filter({$0.name == "archNode"}).first as? ArchNode else { return }
         guard let positionTransform = createArchNodeTransform(arView: arView) else { return }
-        archNodeAnchor.move(to: positionTransform, relativeTo: nil, duration: 0.30)
+        archNode.move(to: positionTransform, relativeTo: nil, duration: 0.30)
         
     }
     
@@ -54,7 +55,7 @@ class Coordinator {
         recentMeasurePointPositions.append(controllerTransform.translation)
         recentMeasurePointPositions = recentMeasurePointPositions.suffix(12)
         
-        //create transform that averages the most recent translations/positions
+        //create transform that averages the most recent translations/positions in order to keep node from skipping/jumping
         let recentMeasurePointPositionTransform = Transform(recentTranslations: recentMeasurePointPositions)
         
         //create transform that averages the most recent orientation
