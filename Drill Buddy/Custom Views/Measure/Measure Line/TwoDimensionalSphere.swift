@@ -10,9 +10,9 @@ import UIKit
 
 class TwoDimensionalSphere: Entity, HasAnchoring, HasCollision {
     
-    let triangleDetailCount: Int
-    let radius: Float
-    let color: UIColor
+    var triangleDetailCount: Int = 50
+    var radius: Float = 0.2
+    var color: UIColor = .white
     
     init(triangleDetailCount: Int, radius: Float, color: UIColor) {
         
@@ -29,7 +29,13 @@ class TwoDimensionalSphere: Entity, HasAnchoring, HasCollision {
     }
     
     @MainActor required init() {
-        fatalError("init() has not been implemented")
+        
+        super.init()
+        let (mesh, material) = self.drawCircle(with: triangleDetailCount, radius: radius, color: color)
+        let model = ModelEntity(mesh: try! .generate(from: [mesh]), materials: [material])
+        
+        self.addChild(model)
+        
     }
     
     func drawCircle(with triangleDetailCount: Int, radius: Float, color: UIColor) -> (MeshDescriptor, PhysicallyBasedMaterial) {
@@ -73,9 +79,9 @@ class TwoDimensionalSphere: Entity, HasAnchoring, HasCollision {
         }
         
         var material = PhysicallyBasedMaterial()
-        material.emissiveColor = .init(color: color.withAlphaComponent(0.05))
-        material.baseColor = .init(tint: color.withAlphaComponent(0.05))
-        material.emissiveIntensity = 0.8
+        material.emissiveColor = .init(color: color.withAlphaComponent(0.5))
+        material.baseColor = .init(tint: color.withAlphaComponent(0.5))
+        material.emissiveIntensity = 10
         
         var mesh = MeshDescriptor(name: "MeasurePoint")
         mesh.positions = MeshBuffer(vertices)

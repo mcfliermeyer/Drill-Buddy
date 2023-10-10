@@ -75,7 +75,7 @@ class ArchNodePoint: Entity {
         var material = PhysicallyBasedMaterial()
         material.emissiveColor = .init(color: color.withAlphaComponent(0.05))
         material.baseColor = .init(tint: color.withAlphaComponent(0.05))
-        material.emissiveIntensity = 10
+        material.emissiveIntensity = 1
         
         var mesh = MeshDescriptor(name: "MeasurePoint")
         mesh.positions = MeshBuffer(vertices)

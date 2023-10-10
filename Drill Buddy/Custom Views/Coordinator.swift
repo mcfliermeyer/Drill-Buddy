@@ -16,8 +16,8 @@ class Coordinator {
     var archNode: ArchNode?
     var raycastResults: [matrix_float4x4] = []
     var recentmeasureButtonPositions: [SIMD3<Float>] = []
-    var measureSphere: TwoDimensionalSphere = TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white)
-    var measureButton: MeasureButton = MeasureButton(radius: 0.25, color: .white, lineWidth: 0.05)
+    var measureSpheres = [TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white)]
+    var measureButton = MeasureButton(radius: 0.25, color: .white, lineWidth: 0.05)
     
     func updateScene(on event: SceneEvents.Update) {
         
@@ -42,8 +42,8 @@ class Coordinator {
         guard let arView = arView else { return }
         
         arView.scene.addAnchor(measureButton)
-        measureButton.addChild(measureSphere)
-        measureSphere.generateCollisionShapes(recursive: true)
+        measureButton.addChild(measureSpheres.last!)
+        measureSpheres.last!.generateCollisionShapes(recursive: true)
         
         sceneObserver = arView.scene.subscribe(to: SceneEvents.Update.self) { [unowned self] in self.updateScene(on: $0) }
         
@@ -84,7 +84,7 @@ class Coordinator {
         
     }
     
-    @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
+    @MainActor @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
         
         guard let touchInView = sender?.location(in: arView) else { return }
         
@@ -99,9 +99,16 @@ class Coordinator {
         hitEntity.removeFromParent()
         arView.scene.addAnchor(hitEntity)
 
-        let trans = Transform(recentTransforms: raycastResults)
+        let positionTransform = Transform(recentTransforms: raycastResults)
+        let scaleTransform = Transform(scale: SIMD3(x: 0.6, y: 0.6, z: 0.6))
         
-        hitEntity.move(to: trans, relativeTo: nil, duration: 0.4)
+        let scaledAndPositioned = positionTransform.matrix * scaleTransform.matrix
+        
+        hitEntity.move(to: scaledAndPositioned, relativeTo: nil, duration: 0.4)
+        
+        measureSpheres.append(TwoDimensionalSphere())
+        measureButton.addChild(measureSpheres.last!)
+        measureSpheres.last!.generateCollisionShapes(recursive: true)
         
     }
     

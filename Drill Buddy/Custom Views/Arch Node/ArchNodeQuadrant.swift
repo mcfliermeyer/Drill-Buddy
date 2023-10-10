@@ -102,8 +102,8 @@ class ArchNodeQuadrant: Entity {
         }
         //slightly grayer less opaque material
         var material = PhysicallyBasedMaterial()
-        material.emissiveColor = .init(color: color.withAlphaComponent(0.05))
-        material.baseColor = .init(tint: color.withAlphaComponent(0.05))
+        material.emissiveColor = .init(color: color.withAlphaComponent(0.5))
+        material.baseColor = .init(tint: color.withAlphaComponent(0.5))
         material.emissiveIntensity = 1.5
         
         var mesh = MeshDescriptor(name: "archNodeQuadrant")
