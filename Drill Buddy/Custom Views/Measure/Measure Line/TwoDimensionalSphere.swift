@@ -1,14 +1,14 @@
 //
-//  MeasurePoint.swift
+//  2DSphere.swift
 //  Drill Buddy
 //
-//  Created by Mark Meyer on 8/23/23.
+//  Created by Mark Meyer on 10/9/23.
 //
 
 import RealityKit
-import SceneKit
+import UIKit
 
-class MeasurePoint: Entity {
+class TwoDimensionalSphere: Entity, HasAnchoring, HasCollision {
     
     let triangleDetailCount: Int
     let radius: Float
@@ -73,10 +73,9 @@ class MeasurePoint: Entity {
         }
         
         var material = PhysicallyBasedMaterial()
-        material.baseColor = .init(tint: .black)
-        material.sheen = .init(tint: .black)
-        material.emissiveColor = .init(color: color)
-        material.emissiveIntensity = 10
+        material.emissiveColor = .init(color: color.withAlphaComponent(0.05))
+        material.baseColor = .init(tint: color.withAlphaComponent(0.05))
+        material.emissiveIntensity = 0.8
         
         var mesh = MeshDescriptor(name: "MeasurePoint")
         mesh.positions = MeshBuffer(vertices)
@@ -86,3 +85,7 @@ class MeasurePoint: Entity {
     }
     
 }
+
+/**
+ create sphere that when touched it goes where raycast is hitting but it animates its way over there.
+ */

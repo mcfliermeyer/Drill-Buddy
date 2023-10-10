@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B22036A02A9687CB00ABBE3C /* MeasurePoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = B220369F2A9687CB00ABBE3C /* MeasurePoint.swift */; };
+		B22036A02A9687CB00ABBE3C /* ArchNodePoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = B220369F2A9687CB00ABBE3C /* ArchNodePoint.swift */; };
 		B255A26029B42F0800B322B0 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = B255A25F29B42F0800B322B0 /* LICENSE.txt */; };
 		B264D04D2A7AB5500082F141 /* ArchNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B264D04C2A7AB5500082F141 /* ArchNode.swift */; };
 		B264D04F2A7AB59C0082F141 /* ArchNodeQuadrant.swift in Sources */ = {isa = PBXBuildFile; fileRef = B264D04E2A7AB59C0082F141 /* ArchNodeQuadrant.swift */; };
@@ -17,10 +17,13 @@
 		B2780ADE299FA2BB0055BF18 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2780ADD299FA2BB0055BF18 /* Assets.xcassets */; };
 		B2780AE1299FA2BB0055BF18 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2780AE0299FA2BB0055BF18 /* Preview Assets.xcassets */; };
 		B2780AF429A4FF6B0055BF18 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2780AF329A4FF6B0055BF18 /* Extensions.swift */; };
+		B2D816D72AD458EB00716985 /* MeasureLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D816D62AD458EB00716985 /* MeasureLine.swift */; };
+		B2D816D92AD45D9D00716985 /* TwoDimensionalSphere.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D816D82AD45D9D00716985 /* TwoDimensionalSphere.swift */; };
+		B2D816DC2AD4AE8C00716985 /* MeasureButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D816DB2AD4AE8C00716985 /* MeasureButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B220369F2A9687CB00ABBE3C /* MeasurePoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurePoint.swift; sourceTree = "<group>"; };
+		B220369F2A9687CB00ABBE3C /* ArchNodePoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchNodePoint.swift; sourceTree = "<group>"; };
 		B255A25F29B42F0800B322B0 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		B264D04C2A7AB5500082F141 /* ArchNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchNode.swift; sourceTree = "<group>"; };
 		B264D04E2A7AB59C0082F141 /* ArchNodeQuadrant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchNodeQuadrant.swift; sourceTree = "<group>"; };
@@ -31,6 +34,9 @@
 		B2780ADD299FA2BB0055BF18 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B2780AE0299FA2BB0055BF18 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B2780AF329A4FF6B0055BF18 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		B2D816D62AD458EB00716985 /* MeasureLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureLine.swift; sourceTree = "<group>"; };
+		B2D816D82AD45D9D00716985 /* TwoDimensionalSphere.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoDimensionalSphere.swift; sourceTree = "<group>"; };
+		B2D816DB2AD4AE8C00716985 /* MeasureButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,14 +50,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		B22036A12A99027100ABBE3C /* Measure Point */ = {
-			isa = PBXGroup;
-			children = (
-				B220369F2A9687CB00ABBE3C /* MeasurePoint.swift */,
-			);
-			path = "Measure Point";
-			sourceTree = "<group>";
-		};
 		B255A25E29B42F0800B322B0 /* LICENSE */ = {
 			isa = PBXGroup;
 			children = (
@@ -63,6 +61,7 @@
 		B264D04B2A7AB42A0082F141 /* Arch Node */ = {
 			isa = PBXGroup;
 			children = (
+				B220369F2A9687CB00ABBE3C /* ArchNodePoint.swift */,
 				B264D04C2A7AB5500082F141 /* ArchNode.swift */,
 				B264D04E2A7AB59C0082F141 /* ArchNodeQuadrant.swift */,
 			);
@@ -110,7 +109,7 @@
 		B2780AE729A4F7DF0055BF18 /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
-				B22036A12A99027100ABBE3C /* Measure Point */,
+				B2D816DA2AD4AE6300716985 /* Measure */,
 				B264D04B2A7AB42A0082F141 /* Arch Node */,
 				B273F02229EB51A9000322E9 /* Coordinator.swift */,
 			);
@@ -123,6 +122,24 @@
 				B2780AF329A4FF6B0055BF18 /* Extensions.swift */,
 			);
 			path = "Utility Functions";
+			sourceTree = "<group>";
+		};
+		B2D816D52AD458D100716985 /* Measure Line */ = {
+			isa = PBXGroup;
+			children = (
+				B2D816D62AD458EB00716985 /* MeasureLine.swift */,
+				B2D816D82AD45D9D00716985 /* TwoDimensionalSphere.swift */,
+			);
+			path = "Measure Line";
+			sourceTree = "<group>";
+		};
+		B2D816DA2AD4AE6300716985 /* Measure */ = {
+			isa = PBXGroup;
+			children = (
+				B2D816D52AD458D100716985 /* Measure Line */,
+				B2D816DB2AD4AE8C00716985 /* MeasureButton.swift */,
+			);
+			path = Measure;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -203,10 +220,13 @@
 				B264D04D2A7AB5500082F141 /* ArchNode.swift in Sources */,
 				B273F02329EB51A9000322E9 /* Coordinator.swift in Sources */,
 				B2780ADC299FA2B90055BF18 /* ContentView.swift in Sources */,
-				B22036A02A9687CB00ABBE3C /* MeasurePoint.swift in Sources */,
+				B22036A02A9687CB00ABBE3C /* ArchNodePoint.swift in Sources */,
 				B264D04F2A7AB59C0082F141 /* ArchNodeQuadrant.swift in Sources */,
 				B2780ADA299FA2B90055BF18 /* Drill_BuddyApp.swift in Sources */,
+				B2D816D72AD458EB00716985 /* MeasureLine.swift in Sources */,
 				B2780AF429A4FF6B0055BF18 /* Extensions.swift in Sources */,
+				B2D816DC2AD4AE8C00716985 /* MeasureButton.swift in Sources */,
+				B2D816D92AD45D9D00716985 /* TwoDimensionalSphere.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

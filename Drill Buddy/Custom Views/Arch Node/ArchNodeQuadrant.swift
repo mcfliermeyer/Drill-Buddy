@@ -100,13 +100,11 @@ class ArchNodeQuadrant: Entity {
             
             return points
         }
-        
-        //high sheen material to help with solid color not visible without physically based material
+        //slightly grayer less opaque material
         var material = PhysicallyBasedMaterial()
-        material.baseColor = .init(tint: .black)
-        material.sheen = .init(tint: .black)
-        material.emissiveColor = .init(color: color)
-        material.emissiveIntensity = 10
+        material.emissiveColor = .init(color: color.withAlphaComponent(0.05))
+        material.baseColor = .init(tint: color.withAlphaComponent(0.05))
+        material.emissiveIntensity = 1.5
         
         var mesh = MeshDescriptor(name: "archNodeQuadrant")
         mesh.positions = MeshBuffer(vertices)

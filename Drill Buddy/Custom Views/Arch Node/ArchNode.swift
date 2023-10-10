@@ -21,7 +21,7 @@ class ArchNode: Entity, HasAnchoring {
             self.addChild(quadrant)
         }
         
-        let measurePoint = MeasurePoint(triangleDetailCount: 50, radius: 0.1, color: .white)
+        let measurePoint = ArchNodePoint(triangleDetailCount: 50, radius: 0.1, color: .white)
         
         self.addChild(measurePoint)
         

@@ -14,25 +14,26 @@ class Coordinator {
     var arView: ARView?
     var sceneObserver: Cancellable!
     var archNode: ArchNode?
-    var controllerNode: ArchNode?
     var raycastResults: [matrix_float4x4] = []
-    var recentMeasurePointPositions: [SIMD3<Float>] = []
+    var recentmeasureButtonPositions: [SIMD3<Float>] = []
+    var measureSphere: TwoDimensionalSphere = TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white)
+    var measureButton: MeasureButton = MeasureButton(radius: 0.25, color: .white, lineWidth: 0.05)
     
     func updateScene(on event: SceneEvents.Update) {
         
         guard let arView = arView else { return }
-        guard let controllerNode = controllerNode else { return }
         guard let archNode = archNode else { return }
         /**
-         controller node to move with camera
+         measure button node to move with camera
          */
-        guard let controllerNodeTransform = createControllerNodeTransform(arView: arView) else { return }
-        controllerNode.move(to: controllerNodeTransform, relativeTo: AnchorEntity(.camera), duration: 0.05)
+        guard let measureButtonTransform = createmeasureButtonTransform(arView: arView) else { return }
+        measureButton.move(to: measureButtonTransform, relativeTo: AnchorEntity(.camera), duration: 0.01)
+        measureButton.children.forEach( {$0.move(to: measureButtonTransform, relativeTo: AnchorEntity(.camera), duration: 0.01)} )
         /**
          arch node to move with raycast results
          */
-        guard let positionTransform = createArchNodeTransform(arView: arView) else { return }
-        archNode.move(to: positionTransform, relativeTo: nil, duration: 0.30)
+        guard let archNodePositionTransform = createArchNodeTransform(arView: arView) else { return }
+        archNode.move(to: archNodePositionTransform, relativeTo: nil, duration: 0.30)
         
     }
     
@@ -40,27 +41,31 @@ class Coordinator {
         
         guard let arView = arView else { return }
         
+        arView.scene.addAnchor(measureButton)
+        measureButton.addChild(measureSphere)
+        measureSphere.generateCollisionShapes(recursive: true)
+        
         sceneObserver = arView.scene.subscribe(to: SceneEvents.Update.self) { [unowned self] in self.updateScene(on: $0) }
         
     }
     
-    func createControllerNodeTransform(arView: ARView) -> Transform? {
+    func createmeasureButtonTransform(arView: ARView) -> Transform? {
         
         let bottomOfScreenTransform = Transform(translation: SIMD3(x: 0, y: -0.25, z: -0.6))
         
         //get camera transform and apply bottomOfScreenTransform to keep the node in the bottom of the screen
-        let controllerTransform = arView.cameraTransform.matrix * bottomOfScreenTransform.matrix
+        let measureButtonTransform = arView.cameraTransform.matrix * bottomOfScreenTransform.matrix
         
         //pull out translation/position from controller transform and keep most recent 12 positions
-        recentMeasurePointPositions.append(controllerTransform.translation)
-        recentMeasurePointPositions = recentMeasurePointPositions.suffix(12)
+        recentmeasureButtonPositions.append(measureButtonTransform.translation)
+        recentmeasureButtonPositions = recentmeasureButtonPositions.suffix(8)
         
         //create transform that averages the most recent translations/positions in order to keep node from skipping/jumping
-        let recentMeasurePointPositionTransform = Transform(recentTranslations: recentMeasurePointPositions)
+        let recentmeasureButtonPositionTransform = Transform(recentTranslations: recentmeasureButtonPositions)
         
         //create transform that averages the most recent orientation
-        let recentMeasurePointOrientationTransform = Transform(rotation: controllerTransform.orientation)
-        let combineOrientationAndPosition = recentMeasurePointPositionTransform.matrix * recentMeasurePointOrientationTransform.matrix
+        let recentmeasureButtonOrientationTransform = Transform(rotation: measureButtonTransform.orientation)
+        let combineOrientationAndPosition = recentmeasureButtonPositionTransform.matrix * recentmeasureButtonOrientationTransform.matrix
         
         return Transform(matrix: combineOrientationAndPosition)
         
@@ -76,6 +81,27 @@ class Coordinator {
         raycastResults = raycastResults.suffix(80)//keep only most recent results
         
         return Transform(recentTransforms: raycastResults)
+        
+    }
+    
+    @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
+        
+        guard let touchInView = sender?.location(in: arView) else { return }
+        
+        guard let arView = arView else { return }
+        
+        guard let hitEntity = arView.entity( at: touchInView)?.anchor else { return }
+        /**
+         as long at the touched entity has anchoring, move it to the raycast result current spot
+         remove entity from parent of measureButton so it no long moves with the camera
+         add entity to arview scene and keep until removed
+         */
+        hitEntity.removeFromParent()
+        arView.scene.addAnchor(hitEntity)
+
+        let trans = Transform(recentTransforms: raycastResults)
+        
+        hitEntity.move(to: trans, relativeTo: nil, duration: 0.4)
         
     }
     
