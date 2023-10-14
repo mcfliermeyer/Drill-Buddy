@@ -10,15 +10,19 @@ import UIKit
 
 class MeasureLine: Entity, HasAnchoring {
     
-    let startPosition, stopPosition: SIMD3<Float>
+    let startTransform, stopTransform: Transform
     
-    var startSphere, stopSphere: TwoDimensionalSphere?
+    let startSphere = TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white)
+    let stopSphere = TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white)
     
-    init(startPosition: SIMD3<Float>, stopPosition: SIMD3<Float>) {
+    init(startTransform: Transform, stopTransform: Transform) {
         
-        self.startPosition = startPosition
-        self.stopPosition = stopPosition
+        self.startTransform = startTransform
+        self.stopTransform = stopTransform
         super.init()
+        
+        let startPosition = startTransform.translation
+        let stopPosition = stopTransform.translation
         
         let midpoint = (startPosition + stopPosition) / 2
         
@@ -34,8 +38,16 @@ class MeasureLine: Entity, HasAnchoring {
         let lineEntity = ModelEntity(mesh: mesh, materials: [lineMaterial])
         lineEntity.position = .init(x: 0, y: 0, z: 0)
         
-        self.addChild(lineEntity)
+        startSphere.transform = startTransform
+        stopSphere.transform = stopTransform
         
+        self.addChild(lineEntity)
+        self.addChild(startSphere)
+        
+    }
+    
+    func addStopSphere() {
+        self.addChild(stopSphere)
     }
     
     @MainActor required init() {

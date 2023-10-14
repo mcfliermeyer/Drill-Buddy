@@ -84,7 +84,7 @@ class Coordinator {
             if  measureSpheres.count > 0 && measureSpheres.count % 2 != 0 {
                 
                 let startSphere = measureSpheres.last!
-                self.measureLine = MeasureLine(startPosition: startSphere.position, stopPosition: archNode.position)
+                self.measureLine = MeasureLine(startTransform: startSphere.transform, stopTransform: archNode.transform)
                 
                 arView.scene.addAnchor(measureLine!)
                 
@@ -100,8 +100,10 @@ class Coordinator {
                 //may need to do calculations to not overload the amount of anchors in realitykit
                 let startSphere = measureSpheres[measureSpheres.count - 2]
                 let endSphere = measureSpheres.last!
-                let line = MeasureLine(startPosition: startSphere.position, stopPosition: endSphere.position)
+                let line = MeasureLine(startTransform: startSphere.transform, stopTransform: endSphere.transform)
+                line.addStopSphere()
                 arView.scene.addAnchor(line)
+                measureSpheres.removeAll()
                 
                 measureSpheres.append(TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white))
                 measureButton.addChild(measureSpheres.last!)
@@ -130,7 +132,7 @@ class Coordinator {
         guard measureSpheres.count > 0 && measureSpheres.count % 2 == 0 else { return }
         let startSphere = measureSpheres[measureSpheres.count - 2]
         
-        self.measureLine = MeasureLine(startPosition: startSphere.position, stopPosition: archNode.position)
+        self.measureLine = MeasureLine(startTransform: startSphere.transform, stopTransform: archNode.transform)
         
         arView.scene.addAnchor(measureLine!)
         
