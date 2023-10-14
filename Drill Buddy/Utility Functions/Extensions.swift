@@ -153,6 +153,20 @@ extension Transform {
         
     }
     
+    init(cameraTransform: Transform, recentmeasureButtonPositions: [SIMD3<Float>]) {
+        
+        let bottomOfScreenTransform = Transform(translation: SIMD3(x: 0, y: -0.25, z: -0.6))
+        
+        let averageTranslations = Transform(recentTranslations: recentmeasureButtonPositions)
+        
+        let currentOrientation = Transform(rotation: cameraTransform.rotation)
+        
+        let combined = averageTranslations.matrix * currentOrientation.matrix * bottomOfScreenTransform.matrix
+        
+        self.init(matrix: combined)
+        
+    }
+    
 }
 
 
