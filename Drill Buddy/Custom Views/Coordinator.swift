@@ -50,7 +50,7 @@ class Coordinator {
         let query = arView.raycast(from: arView.center, allowing: .estimatedPlane, alignment: .any)
         guard let result = query.first else { return }
         raycastResults.append(result.worldTransform)
-        raycastResults = raycastResults.suffix(80)//keep only most recent results
+        raycastResults = raycastResults.suffix(30)//keep only most recent results
         /**
          measure button node to move with camera
          measure button children should only be one TwoDimensionalSphere to move with same transform
@@ -66,7 +66,7 @@ class Coordinator {
          arch node to move with raycast results
          */
         let archNodePositionTransform = Transform(recentTransforms: raycastResults)
-        archNode.move(to: archNodePositionTransform, relativeTo: nil, duration: 0.30)
+        archNode.move(to: archNodePositionTransform, relativeTo: nil, duration: 0.10)
         
         animateMeasureLine(arView: arView, archNode: archNode)
         
