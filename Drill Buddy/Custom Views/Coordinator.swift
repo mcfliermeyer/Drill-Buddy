@@ -20,8 +20,9 @@ class Coordinator {
     var recentmeasureButtonPositions: [SIMD3<Float>] = []
     
     var measureSpheres = [TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white)]
+    var startSphere, stopSphere: TwoDimensionalSphere?
     var measureButton = MeasureButton(radius: 0.25, color: .white, lineWidth: 0.05)
-    var measureLine: AnchorEntity?
+    var measureLine: MeasureLine?
     
     
     
@@ -71,7 +72,7 @@ class Coordinator {
             if  measureSpheres.count > 0 && measureSpheres.count % 2 != 0 {
                 
                 let startSphere = measureSpheres.last!
-                self.measureLine = createLine(between: startSphere.position , archNodePosition: archNode.position)
+                self.measureLine = MeasureLine(startPosition: startSphere.position, stopPosition: archNode.position)
                 
                 arView.scene.addAnchor(measureLine!)
                 
@@ -87,7 +88,7 @@ class Coordinator {
                 //may need to do calculations to not overload the amount of anchors in realitykit
                 let startSphere = measureSpheres[measureSpheres.count - 2]
                 let endSphere = measureSpheres.last!
-                let line = createLine(between: startSphere.position , archNodePosition: endSphere.position)
+                let line = MeasureLine(startPosition: startSphere.position, stopPosition: endSphere.position)
                 arView.scene.addAnchor(line)
                 
                 measureSpheres.append(TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white))
@@ -117,7 +118,7 @@ class Coordinator {
         guard measureSpheres.count > 0 && measureSpheres.count % 2 == 0 else { return }
         let startSphere = measureSpheres[measureSpheres.count - 2]
         
-        self.measureLine = createLine(between: startSphere.position , archNodePosition: archNode.position)
+        self.measureLine = MeasureLine(startPosition: startSphere.position, stopPosition: archNode.position)
         
         arView.scene.addAnchor(measureLine!)
         
@@ -181,30 +182,6 @@ class Coordinator {
         let scaledAndPositioned = positionTransform.matrix * scaleTransform.matrix
         
         measureButtonPressAnimationController = hitEntity.move(to: scaledAndPositioned, relativeTo: nil, duration: 0.2)
-        
-    }
-    
-    func createLine(between measurePointPosition: SIMD3<Float>, archNodePosition: SIMD3<Float>) -> AnchorEntity {
-        //get midpointbetween first measureSphere and current ArchNode
-        let midpoint = (measurePointPosition + archNodePosition) / 2
-        
-        //create anchor with midposition
-        let anchor = AnchorEntity()
-        anchor.position = midpoint
-        anchor.look(at: measurePointPosition, from: midpoint, relativeTo: nil)
-        
-        let distance = simd_distance(measurePointPosition, archNodePosition)
-        
-        var lineMaterial = UnlitMaterial(color: .white.withAlphaComponent(0.5))
-        let mesh = MeshResource.generateBox(width: 0.005, height: 0.005, depth: distance)
-        
-        let lineEntity = ModelEntity(mesh: mesh, materials: [lineMaterial])
-        
-        lineEntity.position = .init(x: 0, y: 0, z: 0)
-        
-        anchor.addChild(lineEntity)
-        
-        return anchor
         
     }
     
