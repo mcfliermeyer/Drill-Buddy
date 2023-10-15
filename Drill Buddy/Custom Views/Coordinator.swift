@@ -18,9 +18,6 @@ class Coordinator {
     var archNode: ArchNode?
     var raycastResults: [matrix_float4x4] = []
     var recentCameraPositions: [SIMD3<Float>] = []
-    var recentmeasureButtonPositions: [SIMD3<Float>] = []
-    
-    var measureSpheres = [TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white)]
     var startSphere, stopSphere: TwoDimensionalSphere?
     var measureButton = MeasureButton(radius: 0.25, color: .white, lineWidth: 0.05)
     var measureLine: MeasureLine?
@@ -32,8 +29,9 @@ class Coordinator {
         guard let arView = arView else { return }
         
         arView.scene.addAnchor(measureButton)
-        measureButton.addChild(measureSpheres.last!)
-        measureSpheres.last!.generateCollisionShapes(recursive: true)
+        startSphere = TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white)
+        measureButton.addChild(startSphere!)
+        startSphere!.generateCollisionShapes(recursive: true)
         
         sceneObserver = arView.scene.subscribe(to: SceneEvents.Update.self) { [unowned self] in self.updateScene(on: $0) }
         animationObserver = arView.scene.subscribe(to: AnimationEvents.PlaybackCompleted.self) { [unowned self] in self.animationsCompleted(on: $0) }
@@ -51,11 +49,7 @@ class Coordinator {
         guard let result = query.first else { return }
         raycastResults.append(result.worldTransform)
         raycastResults = raycastResults.suffix(30)//keep only most recent results
-        /**
-         measure button node to move with camera
-         measure button children should only be one TwoDimensionalSphere to move with same transform
-         */
-//        guard let measureButtonTransform = createmeasureButtonTransform(arView: arView) else { return }
+        
         recentCameraPositions.append(arView.cameraTransform.translation)
         recentCameraPositions = recentCameraPositions.suffix(8)
         
@@ -80,36 +74,29 @@ class Coordinator {
             
             guard let arView = arView else { return }
             guard let archNode = archNode else { return }
-            //we have an odd number of spheres, so we start measuring
-            if  measureSpheres.count > 0 && measureSpheres.count % 2 != 0 {
+            //if stopSphere is nil we start measuring
+            if measureLine == nil {
                 
-                let startSphere = measureSpheres.last!
-                self.measureLine = MeasureLine(startTransform: startSphere.transform, stopTransform: archNode.transform)
+                self.measureLine = MeasureLine(startTransform: startSphere!.transform, stopTransform: archNode.transform)
                 
                 arView.scene.addAnchor(measureLine!)
                 
-                measureSpheres.append(TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white))
-                measureButton.addChild(measureSpheres.last!)
-                measureSpheres.last!.generateCollisionShapes(recursive: true)
+                stopSphere = TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white)
+                measureButton.addChild(stopSphere!)
+                stopSphere!.generateCollisionShapes(recursive: true)
                 
             }
             else {//we end measuring
-                
-                
-                //we need to try to remove start sphere and end sphere anchors and add them to the line anchor children? perhaps
-                //may need to do calculations to not overload the amount of anchors in realitykit
-                let startSphere = measureSpheres[measureSpheres.count - 2]
-                let endSphere = measureSpheres.last!
-                let line = MeasureLine(startTransform: startSphere.transform, stopTransform: endSphere.transform)
+
+                let line = MeasureLine(startTransform: startSphere!.transform, stopTransform: stopSphere!.transform)
                 line.addStopSphere()
                 arView.scene.addAnchor(line)
-                measureSpheres.removeAll()
                 
-                measureSpheres.append(TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white))
-                measureButton.addChild(measureSpheres.last!)
-                measureSpheres.last!.generateCollisionShapes(recursive: true)
+                self.measureLine = nil
                 
-                return
+                startSphere = TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white)
+                measureButton.addChild(startSphere!)
+                startSphere!.generateCollisionShapes(recursive: true)
                 
             }
             
@@ -128,11 +115,7 @@ class Coordinator {
         //destroy old line
         arView.scene.removeAnchor(measureLine!)
         
-        //check if we are measuring and not initial placement
-        guard measureSpheres.count > 0 && measureSpheres.count % 2 == 0 else { return }
-        let startSphere = measureSpheres[measureSpheres.count - 2]
-        
-        self.measureLine = MeasureLine(startTransform: startSphere.transform, stopTransform: archNode.transform)
+        self.measureLine = MeasureLine(startTransform: startSphere!.transform, stopTransform: archNode.transform)
         
         arView.scene.addAnchor(measureLine!)
         
