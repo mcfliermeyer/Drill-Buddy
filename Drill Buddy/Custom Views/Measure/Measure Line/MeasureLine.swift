@@ -8,12 +8,20 @@
 import RealityKit
 import UIKit
 
-class MeasureLine: Entity, HasAnchoring {
+class MeasureLine: Entity, HasAnchoring, NSCopying {
     
-    let startTransform, stopTransform: Transform
+    var startTransform, stopTransform: Transform
     
     let startSphere = TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white)
     let stopSphere = TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white)
+    
+    var distance: Float = 0
+    
+    var mesh: MeshResource = .generateSphere(radius: 0)
+    let lineMaterial = UnlitMaterial(color: .white.withAlphaComponent(0.5))
+    var lineEntity = ModelEntity()
+    
+    static var isMeasuring = false
     
     init(startTransform: Transform, stopTransform: Transform) {
         
@@ -30,23 +38,81 @@ class MeasureLine: Entity, HasAnchoring {
         self.position = midpoint
         self.look(at: startPosition, from: midpoint, relativeTo: nil)
         
-        let distance = simd_distance(startPosition, stopPosition)
+        distance = simd_distance(startPosition, stopPosition)
         
-        let lineMaterial = UnlitMaterial(color: .white.withAlphaComponent(0.5))
-        let mesh = MeshResource.generateBox(width: 0.005, height: 0.005, depth: distance)
+        mesh = MeshResource.generateBox(width: 0.005, height: 0.005, depth: distance)
         
-        let lineEntity = ModelEntity(mesh: mesh, materials: [lineMaterial])
+        lineEntity = ModelEntity(mesh: mesh, materials: [lineMaterial])
         lineEntity.position = .init(x: 0, y: 0, z: 0)
         
         startSphere.transform = startTransform
         stopSphere.transform = stopTransform
         
         self.addChild(lineEntity)
-        self.addChild(startSphere)
         
     }
     
-    func addStopSphere() {
+    func copy(with zone: NSZone? = nil) -> Any {
+        
+        let copy = MeasureLine(startTransform: startTransform, stopTransform: stopTransform)
+        
+        let startPosition = startTransform.translation
+        let stopPosition = stopTransform.translation
+        
+        let midpoint = (startPosition + stopPosition) / 2
+
+        copy.look(at: startPosition, from: midpoint, relativeTo: nil)
+        
+        let distance = simd_distance(startPosition, stopPosition)
+        
+        let mesh = MeshResource.generateBox(width: 0.005, height: 0.005, depth: distance)
+        
+        let lineEntity = ModelEntity(mesh: mesh, materials: [copy.lineMaterial])
+        lineEntity.position = .init(x: 0, y: 0, z: 0)
+        
+        copy.startSphere.transform = copy.startTransform
+        copy.stopSphere.transform = copy.stopTransform
+        
+        copy.addChild(lineEntity)
+        copy.addChild(copy.startSphere)
+        copy.stopMeasuring()
+        
+        return copy
+        
+    }
+    
+    func changeLineTransform(with newStartTransform: Transform, newStopTransform: Transform) {
+        
+        startTransform = newStartTransform
+        stopTransform = newStopTransform
+        
+        let newStartPosition = startTransform.translation
+        let newStopPosition = stopTransform.translation
+        
+        
+        let midpoint = (newStartPosition + newStopPosition) / 2
+        
+        self.position = midpoint
+        self.look(at: newStartPosition, from: midpoint, relativeTo: nil)
+        
+        distance = simd_distance(newStartPosition, newStopPosition)
+        
+        startSphere.transform = newStartTransform
+        stopSphere.transform = newStopTransform
+        
+        let replaceMesh = MeshResource.generateBox(width: 0.005, height: 0.005, depth: distance)
+        
+        let _ = mesh.replaceAsync(with: replaceMesh.contents)
+        
+    }
+    
+    func startMeasuring() {
+        MeasureLine.isMeasuring = true
+        self.addChild(startSphere)
+    }
+    
+    func stopMeasuring() {
+        MeasureLine.isMeasuring = false
         self.addChild(stopSphere)
     }
     

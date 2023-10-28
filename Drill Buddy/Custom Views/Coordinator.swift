@@ -20,9 +20,7 @@ class Coordinator {
     var recentCameraPositions: [SIMD3<Float>] = []
     var startSphere, stopSphere: TwoDimensionalSphere?
     var measureButton = MeasureButton(radius: 0.25, color: .white, lineWidth: 0.05)
-    var measureLine: MeasureLine?
-    
-    
+    var measureLine = MeasureLine(startTransform: Transform(), stopTransform: Transform())
     
     func setupUI() {
         
@@ -31,7 +29,6 @@ class Coordinator {
         arView.scene.addAnchor(measureButton)
         startSphere = TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white)
         measureButton.addChild(startSphere!)
-        startSphere!.generateCollisionShapes(recursive: true)
         
         sceneObserver = arView.scene.subscribe(to: SceneEvents.Update.self) { [unowned self] in self.updateScene(on: $0) }
         animationObserver = arView.scene.subscribe(to: AnimationEvents.PlaybackCompleted.self) { [unowned self] in self.animationsCompleted(on: $0) }
@@ -62,41 +59,48 @@ class Coordinator {
         let archNodePositionTransform = Transform(recentTransforms: raycastResults)
         archNode.move(to: archNodePositionTransform, relativeTo: nil, duration: 0.10)
         
-        animateMeasureLine(arView: arView, archNode: archNode)
-        
+        guard MeasureLine.isMeasuring else { return }
+        //if currently measuring, update line transform
+        self.measureLine.changeLineTransform(with: startSphere!.transform, newStopTransform: archNode.transform)
+
     }
     
     func animationsCompleted(on event: AnimationEvents.PlaybackCompleted) {
         /**
          check if animation that was completed is for the measure button press  measureButtonPressAnimation
          */
+        //here we know the touched sphere should have moved into position
         if event.playbackController == self.measureButtonPressAnimationController {
             
             guard let arView = arView else { return }
-            guard let archNode = archNode else { return }
-            //if stopSphere is nil we start measuring
-            if measureLine == nil {
+            
+            if MeasureLine.isMeasuring == false {
                 
-                self.measureLine = MeasureLine(startTransform: startSphere!.transform, stopTransform: archNode.transform)
-                
-                arView.scene.addAnchor(measureLine!)
+                measureLine.startMeasuring()
+                arView.scene.addAnchor(measureLine)
+                arView.scene.removeAnchor(startSphere!)
                 
                 stopSphere = TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white)
                 measureButton.addChild(stopSphere!)
-                stopSphere!.generateCollisionShapes(recursive: true)
                 
             }
             else {//we end measuring
-
-                let line = MeasureLine(startTransform: startSphere!.transform, stopTransform: stopSphere!.transform)
-                line.addStopSphere()
+                
+                self.measureLine.changeLineTransform(with: startSphere!.transform, newStopTransform: stopSphere!.transform)
+                measureLine.stopMeasuring()
+                
+                let line = measureLine.copy() as! MeasureLine
                 arView.scene.addAnchor(line)
                 
-                self.measureLine = nil
+                arView.scene.removeAnchor(startSphere!)
+                arView.scene.removeAnchor(stopSphere!)
+                arView.scene.removeAnchor(measureLine)
+                stopSphere = nil
                 
                 startSphere = TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white)
                 measureButton.addChild(startSphere!)
-                startSphere!.generateCollisionShapes(recursive: true)
+                
+                measureLine = MeasureLine(startTransform: Transform(), stopTransform: Transform())
                 
             }
             
@@ -107,41 +111,25 @@ class Coordinator {
         
     }
     
-    func animateMeasureLine(arView: ARView, archNode: ArchNode) {
-        
-        guard measureLine != nil else { return }
-        //check if we are measuring or not
-        //if measuring, we need to create a line and destroy old line. or change current one?
-        //destroy old line
-        arView.scene.removeAnchor(measureLine!)
-        
-        self.measureLine = MeasureLine(startTransform: startSphere!.transform, stopTransform: archNode.transform)
-        
-        arView.scene.addAnchor(measureLine!)
-        
-    }
-    
     @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
         
         guard let touchInView = sender?.location(in: arView) else { return }
         
         guard let arView = arView else { return }
         
-        guard let hitEntity = arView.entity( at: touchInView)?.anchor else { return }
-        /**
-         as long at the touched entity has anchoring, move it to the raycast result current spot
-         remove entity from parent of measureButton so it no long moves with the camera
-         add entity to arview scene and keep until removed
-         */
-        hitEntity.removeFromParent()
-        arView.scene.addAnchor(hitEntity)
-
+        guard let sphere = arView.entity( at: touchInView) as? TwoDimensionalSphere else { return }
+        
+        //remove from button and add to scene to move into position
+        sphere.removeFromParent()
+        arView.scene.addAnchor(sphere)
+        
         let positionTransform = Transform(recentTransforms: raycastResults)
         let scaleTransform = Transform(scale: SIMD3(x: 0.6, y: 0.6, z: 0.6))
         
         let scaledAndPositioned = positionTransform.matrix * scaleTransform.matrix
         
-        measureButtonPressAnimationController = hitEntity.move(to: scaledAndPositioned, relativeTo: nil, duration: 0.2)
+//        //catch the animation controller to make sure this is the animation that is completing to do more logic after animation completes
+        measureButtonPressAnimationController = sphere.move(to: scaledAndPositioned, relativeTo: nil, duration: 0.2)
         
     }
     

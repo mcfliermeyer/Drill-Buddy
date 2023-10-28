@@ -8,7 +8,7 @@
 import RealityKit
 import UIKit
 
-class TwoDimensionalSphere: Entity, HasAnchoring, HasCollision {
+class TwoDimensionalSphere: Entity, HasAnchoring {
     
     var triangleDetailCount: Int = 50
     var radius: Float = 0.2
@@ -19,22 +19,29 @@ class TwoDimensionalSphere: Entity, HasAnchoring, HasCollision {
         self.triangleDetailCount = triangleDetailCount
         self.radius = radius
         self.color = color
+        
         super.init()
         
         let (mesh, material) = self.drawCircle(with: triangleDetailCount, radius: radius, color: color)
-        let model = ModelEntity(mesh: try! .generate(from: [mesh]), materials: [material])
+        let model = ModelComponent(mesh: try! .generate(from: [mesh]), materials: [material])
+        let collision = CollisionComponent(shapes: [ShapeResource.generateSphere(radius: radius/10)])//radius of model is changed during drawing, this scales collision back down to where size of model component
         
-        self.addChild(model)
+        self.components[ModelComponent.self] = model
+        self.components[CollisionComponent.self] = collision
+        
         
     }
     
     @MainActor required init() {
         
         super.init()
-        let (mesh, material) = self.drawCircle(with: triangleDetailCount, radius: radius, color: color)
-        let model = ModelEntity(mesh: try! .generate(from: [mesh]), materials: [material])
         
-        self.addChild(model)
+        let (mesh, material) = self.drawCircle(with: triangleDetailCount, radius: radius, color: color)
+        let model = ModelComponent(mesh: try! .generate(from: [mesh]), materials: [material])
+        let collision = CollisionComponent(shapes: [ShapeResource.generateSphere(radius: radius/10)])//radius is changed during drawing, this scales it back down
+        
+        self.components[ModelComponent.self] = model
+        self.components[CollisionComponent.self] = collision
         
     }
     
@@ -91,7 +98,3 @@ class TwoDimensionalSphere: Entity, HasAnchoring, HasCollision {
     }
     
 }
-
-/**
- create sphere that when touched it goes where raycast is hitting but it animates its way over there.
- */
