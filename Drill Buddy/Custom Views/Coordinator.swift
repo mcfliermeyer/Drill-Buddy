@@ -69,8 +69,12 @@ class Coordinator {
         /**
          check if animation that was completed is for the measure button press  measureButtonPressAnimation
          */
+        
         //here we know the touched sphere should have moved into position
         if event.playbackController == self.measureButtonPressAnimationController {
+            
+            let generator = UIImpactFeedbackGenerator(style: .soft)
+            generator.impactOccurred()
             
             guard let arView = arView else { return }
             
@@ -128,7 +132,7 @@ class Coordinator {
         
         let scaledAndPositioned = positionTransform.matrix * scaleTransform.matrix
         
-//        //catch the animation controller to make sure this is the animation that is completing to do more logic after animation completes
+        //catch the animation controller to make sure this is the animation that is completing to do more logic after animation completes
         measureButtonPressAnimationController = sphere.move(to: scaledAndPositioned, relativeTo: nil, duration: 0.2)
         
     }
