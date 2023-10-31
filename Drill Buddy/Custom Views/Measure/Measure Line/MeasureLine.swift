@@ -15,6 +15,8 @@ class MeasureLine: Entity, HasAnchoring, NSCopying {
     let startSphere = TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white)
     let stopSphere = TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white)
     
+    let measurementBubble = MeasurementBubble(length: 0.15, color: .white)
+    
     var distance: Float = 0
     
     var mesh: MeshResource = .generateSphere(radius: 0)
@@ -48,6 +50,10 @@ class MeasureLine: Entity, HasAnchoring, NSCopying {
         startSphere.transform = startTransform
         stopSphere.transform = stopTransform
         
+        self.measurementBubble.position.y = 10
+        
+        lineEntity.addChild(measurementBubble)
+        
         self.addChild(lineEntity)
         
     }
@@ -77,6 +83,8 @@ class MeasureLine: Entity, HasAnchoring, NSCopying {
         copy.addChild(copy.startSphere)
         copy.stopMeasuring()
         
+        copy.measurementBubble.position = self.measurementBubble.position
+        
         return copy
         
     }
@@ -103,6 +111,8 @@ class MeasureLine: Entity, HasAnchoring, NSCopying {
         let replaceMesh = MeshResource.generateBox(width: 0.005, height: 0.005, depth: distance)
         
         let _ = mesh.replaceAsync(with: replaceMesh.contents)
+        
+        self.measurementBubble.position = midpoint
         
     }
     

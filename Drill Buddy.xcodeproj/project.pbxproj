@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B22036A02A9687CB00ABBE3C /* ArchNodePoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = B220369F2A9687CB00ABBE3C /* ArchNodePoint.swift */; };
 		B255A26029B42F0800B322B0 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = B255A25F29B42F0800B322B0 /* LICENSE.txt */; };
+		B2591F132AEDFCF400A96082 /* MeasurementBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2591F122AEDFCF400A96082 /* MeasurementBubble.swift */; };
 		B264D04D2A7AB5500082F141 /* ArchNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B264D04C2A7AB5500082F141 /* ArchNode.swift */; };
 		B264D04F2A7AB59C0082F141 /* ArchNodeQuadrant.swift in Sources */ = {isa = PBXBuildFile; fileRef = B264D04E2A7AB59C0082F141 /* ArchNodeQuadrant.swift */; };
 		B273F02329EB51A9000322E9 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B273F02229EB51A9000322E9 /* Coordinator.swift */; };
@@ -25,6 +26,7 @@
 /* Begin PBXFileReference section */
 		B220369F2A9687CB00ABBE3C /* ArchNodePoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchNodePoint.swift; sourceTree = "<group>"; };
 		B255A25F29B42F0800B322B0 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		B2591F122AEDFCF400A96082 /* MeasurementBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementBubble.swift; sourceTree = "<group>"; };
 		B264D04C2A7AB5500082F141 /* ArchNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchNode.swift; sourceTree = "<group>"; };
 		B264D04E2A7AB59C0082F141 /* ArchNodeQuadrant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchNodeQuadrant.swift; sourceTree = "<group>"; };
 		B273F02229EB51A9000322E9 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 			children = (
 				B2D816D62AD458EB00716985 /* MeasureLine.swift */,
 				B2D816D82AD45D9D00716985 /* TwoDimensionalSphere.swift */,
+				B2591F122AEDFCF400A96082 /* MeasurementBubble.swift */,
 			);
 			path = "Measure Line";
 			sourceTree = "<group>";
@@ -222,6 +225,7 @@
 				B2780ADC299FA2B90055BF18 /* ContentView.swift in Sources */,
 				B22036A02A9687CB00ABBE3C /* ArchNodePoint.swift in Sources */,
 				B264D04F2A7AB59C0082F141 /* ArchNodeQuadrant.swift in Sources */,
+				B2591F132AEDFCF400A96082 /* MeasurementBubble.swift in Sources */,
 				B2780ADA299FA2B90055BF18 /* Drill_BuddyApp.swift in Sources */,
 				B2D816D72AD458EB00716985 /* MeasureLine.swift in Sources */,
 				B2780AF429A4FF6B0055BF18 /* Extensions.swift in Sources */,
