@@ -112,6 +112,15 @@ class MeasureLine: Entity, HasAnchoring, NSCopying {
         
         let _ = mesh.replaceAsync(with: replaceMesh.contents)
         
+        let measurement = Measurement(value: Double(distance), unit: UnitLength.meters)
+        let inches = measurement.converted(to: .inches)
+        let wholeInches = Int(floor(inches.value))
+        let decimal = inches.value.truncatingRemainder(dividingBy: 1)
+        var fractionalInches = Measurement<FractionalInches>(value: decimal, unit: .inch)
+        fractionalInches.convert(to: .halfInch)
+        
+        print("distance: \(wholeInches) and \(fractionalInches.unit.symbol) dec: \(decimal)")
+        
         self.measurementBubble.position = midpoint
         
     }
