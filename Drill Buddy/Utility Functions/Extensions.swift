@@ -187,12 +187,18 @@ final class CryptoCurrency: Dimension {
     }
 }
 
-final class AmericanMeasuring: Dimension {
+extension Measurement where UnitType : UnitLength {
     
-    static let inchy = AmericanMeasuring(symbol: "inches", converter: UnitConverterLinear(coefficient: 0.0254))
+    internal func convertDecimalToFraction() -> FractionalInch {
+        
+        guard value <= 0.875 else { return FractionalInch.sevenEighthInch }
+        guard value <= 0.75 else { return FractionalInch.threeQuarterInch }
+        guard value <= 0.625 else { return FractionalInch.fiveEighthInch }
+        guard value <= 0.5 else { return FractionalInch.halfInch }
+        guard value <= 0.375 else { return FractionalInch.threeEighthInch }
+        guard value <= 0.25 else { return FractionalInch.quarterInch }
+        return FractionalInch.eighthInch
+        
+    }
     
 }
-
-
-
-

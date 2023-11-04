@@ -27,6 +27,7 @@ class Coordinator {
         guard let arView = arView else { return }
         
         arView.scene.addAnchor(measureButton)
+        measureButton.name = "measureButton"
         startSphere = TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white)
         measureButton.addChild(startSphere!)
         

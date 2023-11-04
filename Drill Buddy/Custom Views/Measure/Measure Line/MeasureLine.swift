@@ -25,6 +25,8 @@ class MeasureLine: Entity, HasAnchoring, NSCopying {
     
     static var isMeasuring = false
     
+    var measurementText = ""
+    
     init(startTransform: Transform, stopTransform: Transform) {
         
         self.startTransform = startTransform
@@ -56,6 +58,12 @@ class MeasureLine: Entity, HasAnchoring, NSCopying {
         
         self.addChild(lineEntity)
         
+        guard let measureButtonEntity = self.scene?.findEntity(named: "measureButton") else { return }//find measurebutton to use for bubble entity to look at
+        let lookAt = measureButtonEntity.position
+        let lookFrom = measurementBubble.position
+        measurementBubble.look(at: lookAt, from: lookFrom, relativeTo: nil)
+        measurementBubble.transform.rotation = simd_quatf(angle: 90.toRadian(), axis: SIMD3(0,0,1))
+        
     }
     
     func copy(with zone: NSZone? = nil) -> Any {
@@ -84,6 +92,15 @@ class MeasureLine: Entity, HasAnchoring, NSCopying {
         copy.stopMeasuring()
         
         copy.measurementBubble.position = self.measurementBubble.position
+        copy.measurementBubble.bubbleText.changeText(text: self.measurementText)
+        
+        guard let measureButtonEntity = self.scene?.findEntity(named: "measureButton") else { return copy }//find measurebutton to use for bubble entity to look at
+        let lookAt = measureButtonEntity.position
+        let lookFrom = copy.measurementBubble.position
+        copy.measurementBubble.look(at: lookAt, from: lookFrom, relativeTo: nil)
+        copy.measurementBubble.transform.rotation = simd_quatf(angle: 90.toRadian(), axis: SIMD3(0,0,1))
+        
+        copy.measurementBubble.position = measurementBubble.position
         
         return copy
         
@@ -112,16 +129,27 @@ class MeasureLine: Entity, HasAnchoring, NSCopying {
         
         let _ = mesh.replaceAsync(with: replaceMesh.contents)
         
-        let measurement = Measurement(value: Double(distance), unit: UnitLength.meters)
-        let inches = measurement.converted(to: .inches)
-        let wholeInches = Int(floor(inches.value))
-        let decimal = inches.value.truncatingRemainder(dividingBy: 1)
-        var fractionalInches = Measurement<FractionalInches>(value: decimal, unit: .inch)
-        fractionalInches.convert(to: .halfInch)
+        let meters = Measurement(value: Double(distance), unit: UnitLength.meters)
         
-        print("distance: \(wholeInches) and \(fractionalInches.unit.symbol) dec: \(decimal)")
+        let feetFloorDouble = floor(meters.converted(to: .feet).value)
+        let feet = Measurement(value: feetFloorDouble, unit: UnitLength.feet)
+        
+        let inchFloorDouble = floor((meters - feet).converted(to: .inches).value)
+        let inches = Measurement(value: inchFloorDouble, unit: UnitLength.inches)
+        
+        let decimal = (meters - feet - inches).converted(to: .inches)
+        let fractionalInch = decimal.convertDecimalToFraction()
+        
+        measurementText = "\(Int(feet.value))\'\(Int(inches.value))\(fractionalInch.symbol)"
         
         self.measurementBubble.position = midpoint
+        self.measurementBubble.bubbleText.changeText(text: measurementText)
+        
+        guard let measureButtonEntity = self.scene?.findEntity(named: "measureButton") else { return }//find measurebutton to use for bubble entity to look at
+        let lookAt = measureButtonEntity.position
+        let lookFrom = measurementBubble.position
+        measurementBubble.look(at: lookAt, from: lookFrom, relativeTo: nil)
+        measurementBubble.transform.rotation = simd_quatf(angle: 90.toRadian(), axis: SIMD3(0,0,1))
         
     }
     

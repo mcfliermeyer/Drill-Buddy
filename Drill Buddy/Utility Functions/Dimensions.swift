@@ -7,28 +7,26 @@
 
 import Foundation
 
-final class FractionalInches: Dimension {
+final class FractionalInch: UnitLength {
+//    ⅛ ¼ ⅜ ½ ⅝ ¾ ⅞
+    static let inch = FractionalInch(symbol: "\"", converter: UnitConverterLinear(coefficient: 1.0))
     
-    static let inch = FractionalInches(symbol: "inch", converter: UnitConverterLinear(coefficient: 1.0))
+    static let sevenEighthInch = FractionalInch(symbol: "⅞\"", converter: UnitConverterLinear(coefficient: 0.875))
     
-    static let sevenEighthInch = FractionalInches(symbol: "5/8 inch", converter: UnitConverterLinear(coefficient: 0.875))
+    static let threeQuarterInch = FractionalInch(symbol: "¾\"", converter: UnitConverterLinear(coefficient: 0.75))
     
-    static let threeQuarterInch = FractionalInches(symbol: "3/4 inch", converter: UnitConverterLinear(coefficient: 0.75))
+    static let fiveEighthInch = FractionalInch(symbol: "⅝\"", converter: UnitConverterLinear(coefficient: 0.625))
     
-    static let fiveEighthInch = FractionalInches(symbol: "5/8 inch", converter: UnitConverterLinear(coefficient: 0.625))
+    static let halfInch = FractionalInch(symbol: "½\"", converter: UnitConverterLinear(coefficient: 0.5))
     
-    static let halfInch = FractionalInches(symbol: "1/2 inch", converter: UnitConverterLinear(coefficient: 0.5))
+    static let threeEighthInch = FractionalInch(symbol: "⅜\"", converter: UnitConverterLinear(coefficient: 0.375))
     
-    static let threeEighthInch = FractionalInches(symbol: "3/8 inch", converter: UnitConverterLinear(coefficient: 0.375))
+    static let quarterInch = FractionalInch(symbol: "¼\"", converter: UnitConverterLinear(coefficient: 0.25))
     
-    static let quarterInch = FractionalInches(symbol: "1/4 inch", converter: UnitConverterLinear(coefficient: 0.25))
+    static let eighthInch = FractionalInch(symbol: "⅛\"", converter: UnitConverterLinear(coefficient: 0.125))
     
-    static let eightInch = FractionalInches(symbol: "1/8 inch", converter: UnitConverterLinear(coefficient: 0.125))
-    
-    override class func baseUnit() -> FractionalInches {
-        return inch
-    }
-    
-    
+//    override class func baseUnit() -> UnitLength {
+//        return UnitLength.inches
+//    }
     
 }
