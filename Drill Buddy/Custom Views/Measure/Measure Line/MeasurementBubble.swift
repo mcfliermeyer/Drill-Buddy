@@ -59,7 +59,54 @@ class MeasurementBubble: Entity, HasAnchoring {
         
     }
     
-    //oblong pill shape to put in center of measureline with text on top showing current measurement
+    func billBoard(newStartPosition: SIMD3<Float>, midpoint: SIMD3<Float>) {
+        
+        guard let measureButtonEntity = self.scene?.findEntity(named: "measureButton") else { return }//find measurebutton to use for bubble entity to look at
+        self.look(at: newStartPosition, from: midpoint, relativeTo: nil)
+
+        let spinBubble = Transform(rotation: simd_quatf(angle: -90.toRadian(), axis: SIMD3(1,0,0)))
+        let spinBubble2 = Transform(rotation: simd_quatf(angle: -90.toRadian(), axis: SIMD3(0,1,0)))
+        let combo = self.transform.matrix * spinBubble.matrix * spinBubble2.matrix
+        
+        self.move(to: combo, relativeTo: nil)
+        
+    }
+    
+    class MeasurementBubbleText: Entity {
+        
+        var mesh: MeshResource
+        
+        let font = UIFont.systemFont(ofSize: 0.15, weight: .medium, width: .compressed)
+        
+        required init(text: String, color: UIColor) {
+            
+            mesh = MeshResource.generateText(text, extrusionDepth: 0.001, font: font, alignment: .left)
+            
+            super.init()
+            
+            let model = ModelComponent(mesh: mesh, materials: [UnlitMaterial(color: color)])
+            
+            self.components[ModelComponent.self] = model
+            
+            self.transform.rotation = simd_quatf(angle: -90.toRadian(), axis: SIMD3(0,0,1))
+            
+        }
+        
+        @MainActor required init() {
+            fatalError("init() has not been implemented")
+        }
+        
+        func changeText(text: String) {
+            
+            let mesh = MeshResource.generateText(text, extrusionDepth: 0.001, font: font, alignment: .left)
+            let model = ModelComponent(mesh: mesh, materials: [UnlitMaterial(color: .black)])
+            
+            self.components[ModelComponent.self] = model
+            
+        }
+        
+    }
+    
     func drawOblongShape(length: Float) -> (MeshDescriptor, PhysicallyBasedMaterial) {
         
         let triangleDetailCount = 15
@@ -174,41 +221,6 @@ class MeasurementBubble: Entity, HasAnchoring {
         mesh.primitives = .triangles(topAndBottomTriangles)
         
         return (mesh, material)
-    }
-    
-    class MeasurementBubbleText: Entity {
-        
-        var mesh: MeshResource
-        
-        let font = UIFont.systemFont(ofSize: 0.15, weight: .medium, width: .compressed)
-        
-        required init(text: String, color: UIColor) {
-            
-            mesh = MeshResource.generateText(text, extrusionDepth: 0.001, font: font, alignment: .left)
-            
-            super.init()
-            
-            let model = ModelComponent(mesh: mesh, materials: [UnlitMaterial(color: color)])
-            
-            self.components[ModelComponent.self] = model
-            
-            self.transform.rotation = simd_quatf(angle: -90.toRadian(), axis: SIMD3(0,0,1))
-            
-        }
-        
-        @MainActor required init() {
-            fatalError("init() has not been implemented")
-        }
-        
-        func changeText(text: String) {
-            
-            let mesh = MeshResource.generateText(text, extrusionDepth: 0.001, font: font, alignment: .left)
-            let model = ModelComponent(mesh: mesh, materials: [UnlitMaterial(color: .black)])
-            
-            self.components[ModelComponent.self] = model
-            
-        }
-        
     }
     
     

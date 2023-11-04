@@ -58,11 +58,7 @@ class MeasureLine: Entity, HasAnchoring, NSCopying {
         
         self.addChild(lineEntity)
         
-        guard let measureButtonEntity = self.scene?.findEntity(named: "measureButton") else { return }//find measurebutton to use for bubble entity to look at
-        let lookAt = measureButtonEntity.position
-        let lookFrom = measurementBubble.position
-        measurementBubble.look(at: lookAt, from: lookFrom, relativeTo: nil)
-        measurementBubble.transform.rotation = simd_quatf(angle: 90.toRadian(), axis: SIMD3(0,0,1))
+        measurementBubble.billBoard(newStartPosition: startPosition, midpoint: midpoint)
         
     }
     
@@ -94,13 +90,7 @@ class MeasureLine: Entity, HasAnchoring, NSCopying {
         copy.measurementBubble.position = self.measurementBubble.position
         copy.measurementBubble.bubbleText.changeText(text: self.measurementText)
         
-        guard let measureButtonEntity = self.scene?.findEntity(named: "measureButton") else { return copy }//find measurebutton to use for bubble entity to look at
-        let lookAt = measureButtonEntity.position
-        let lookFrom = copy.measurementBubble.position
-        copy.measurementBubble.look(at: lookAt, from: lookFrom, relativeTo: nil)
-        copy.measurementBubble.transform.rotation = simd_quatf(angle: 90.toRadian(), axis: SIMD3(0,0,1))
-        
-        copy.measurementBubble.position = measurementBubble.position
+        copy.measurementBubble.transform = measurementBubble.transform
         
         return copy
         
@@ -126,30 +116,15 @@ class MeasureLine: Entity, HasAnchoring, NSCopying {
         stopSphere.transform = newStopTransform
         
         let replaceMesh = MeshResource.generateBox(width: 0.005, height: 0.005, depth: distance)
-        
         let _ = mesh.replaceAsync(with: replaceMesh.contents)
         
-        let meters = Measurement(value: Double(distance), unit: UnitLength.meters)
-        
-        let feetFloorDouble = floor(meters.converted(to: .feet).value)
-        let feet = Measurement(value: feetFloorDouble, unit: UnitLength.feet)
-        
-        let inchFloorDouble = floor((meters - feet).converted(to: .inches).value)
-        let inches = Measurement(value: inchFloorDouble, unit: UnitLength.inches)
-        
-        let decimal = (meters - feet - inches).converted(to: .inches)
-        let fractionalInch = decimal.convertDecimalToFraction()
-        
-        measurementText = "\(Int(feet.value))\'\(Int(inches.value))\(fractionalInch.symbol)"
+        measurementText = formatDistanceString(from: distance)
         
         self.measurementBubble.position = midpoint
         self.measurementBubble.bubbleText.changeText(text: measurementText)
         
-        guard let measureButtonEntity = self.scene?.findEntity(named: "measureButton") else { return }//find measurebutton to use for bubble entity to look at
-        let lookAt = measureButtonEntity.position
-        let lookFrom = measurementBubble.position
-        measurementBubble.look(at: lookAt, from: lookFrom, relativeTo: nil)
-        measurementBubble.transform.rotation = simd_quatf(angle: 90.toRadian(), axis: SIMD3(0,0,1))
+        measurementBubble.billBoard(newStartPosition: newStartPosition, midpoint: midpoint)
+        
         
     }
     
@@ -165,6 +140,22 @@ class MeasureLine: Entity, HasAnchoring, NSCopying {
     
     @MainActor required init() {
         fatalError("init() has not been implemented")
+    }
+    
+    func formatDistanceString(from distance: Float) -> String{
+        
+        let meters = Measurement(value: Double(distance), unit: UnitLength.meters)
+        
+        let feetFloorDouble = floor(meters.converted(to: .feet).value)
+        let feet = Measurement(value: feetFloorDouble, unit: UnitLength.feet)
+        
+        let inchFloorDouble = floor((meters - feet).converted(to: .inches).value)
+        let inches = Measurement(value: inchFloorDouble, unit: UnitLength.inches)
+        
+        let decimal = (meters - feet - inches).converted(to: .inches)
+        let fractionalInch = decimal.convertDecimalToFraction()
+        
+        return "\(Int(feet.value))\'\(Int(inches.value))\(fractionalInch.symbol)"
     }
     
 }
