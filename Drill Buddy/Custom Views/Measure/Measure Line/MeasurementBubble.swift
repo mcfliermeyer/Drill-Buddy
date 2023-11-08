@@ -59,17 +59,40 @@ class MeasurementBubble: Entity, HasAnchoring {
         
     }
     
-    func billBoard(newStartPosition: SIMD3<Float>, midpoint: SIMD3<Float>) {
+    func billBoard2(newStartPosition: SIMD3<Float>, midpoint: SIMD3<Float>) {
         
-        guard let measureButtonEntity = self.scene?.findEntity(named: "measureButton") else { return }//find measurebutton to use for bubble entity to look at
+//        guard let measureButtonEntity = self.scene?.findEntity(named: "measureButton") else { return }//find measurebutton to use for bubble entity to look at
         self.look(at: newStartPosition, from: midpoint, relativeTo: nil)
 
-        let spinBubble = Transform(rotation: simd_quatf(angle: -90.toRadian(), axis: SIMD3(1,0,0)))
-        let spinBubble2 = Transform(rotation: simd_quatf(angle: -90.toRadian(), axis: SIMD3(0,1,0)))
-        let combo = self.transform.matrix * spinBubble.matrix * spinBubble2.matrix
+        let spinBubble = Transform(rotation: simd_quatf(angle: -90.toRadian(), axis: SIMD3(1,0,0))).matrix
+        let spinBubble2 = Transform(rotation: simd_quatf(angle: -90.toRadian(), axis: SIMD3(0,1,0))).matrix
+        let combo = simd_mul(self.transform.matrix, spinBubble * spinBubble2)
         
         self.move(to: combo, relativeTo: nil)
         
+    }
+    
+    func billBoard(newStartPosition: SIMD3<Float>, midpoint: SIMD3<Float>) {
+        
+//        guard let measureButtonEntity = self.scene?.findEntity(named: "measureButton") else { return }//find measurebutton to use for bubble entity to look at
+//        let btnRotation = Transform(rotation: measureButtonEntity.transform.rotation).matrix
+        
+        self.look(at: newStartPosition, from: midpoint, relativeTo: nil)
+
+        let spinBubble = Transform(rotation: simd_quatf(angle: -90.toRadian(), axis: SIMD3(1,0,0))).matrix
+        let spinBubble2 = Transform(rotation: simd_quatf(angle: -90.toRadian(), axis: SIMD3(0,1,0))).matrix
+        let combo = simd_mul(self.transform.matrix, spinBubble * spinBubble2)
+        
+        self.move(to: combo, relativeTo: nil)
+        
+        print(self.transform.eulerAngles)
+        /*
+         good
+         SIMD3<Float>(-5.5014766e-09, 0.083860226, 1.637752)
+         
+         bad
+         SIMD3<Float>(-4.5823434e-09, -3.0015206, 1.3637289)
+         */
     }
     
     class MeasurementBubbleText: Entity {
