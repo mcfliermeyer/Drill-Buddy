@@ -10,6 +10,8 @@ import UIKit
 
 class MeasurementBubble: Entity, HasAnchoring {
     
+    var arView: ARView?
+    
     var length: Float = 0.25
     var color: UIColor = .white
     
@@ -59,14 +61,35 @@ class MeasurementBubble: Entity, HasAnchoring {
         
     }
     
+    /*
+     
+     the text is spinning with the node
+     keep the text forward facing
+     
+     */
+    
+    //get the look towards button transform
+    //get the look toward measurenode transform.
+    //maybe set an anchor that stays to the right of Measureline
+    //figure out which tranform info i need to keep the face looking at me
+    //and still keep the oblong bubble inline with the measureline
+    
     func billBoard(newStartPosition: SIMD3<Float>, midpoint: SIMD3<Float>) {
         
-        guard let measureButtonEntity = self.scene?.findEntity(named: "measureButton") else { return }//find measurebutton to use for bubble entity to look at
+        guard let arView = arView else { return }
+        /*
+         get look transform from center of line to first node to get roll transform
+         */
         self.look(at: newStartPosition, from: midpoint, relativeTo: nil)
-
-        let spinBubble = Transform(rotation: simd_quatf(angle: -90.toRadian(), axis: SIMD3(1,0,0)))
-        let spinBubble2 = Transform(rotation: simd_quatf(angle: -90.toRadian(), axis: SIMD3(0,1,0)))
-        let combo = self.transform.matrix * spinBubble.matrix * spinBubble2.matrix
+        let lineLook = self.transform.eulerAngles.x * -10
+        print(lineLook)
+        let lineLookTransform = Transform(roll: lineLook)
+        
+        self.look(at: arView.cameraTransform.translation, from: midpoint, relativeTo: nil)
+        let spinBubble = Transform(roll: -270.toRadian())//roll needed to follow measureline
+        let spinBubble2 = Transform(yaw: 180.toRadian())//spins around x vector when measureline goes LtR
+        
+        let combo = self.transform.matrix * spinBubble2.matrix * spinBubble.matrix * lineLookTransform.matrix
         
         self.move(to: combo, relativeTo: nil)
         

@@ -25,6 +25,7 @@ class Coordinator {
     func setupUI() {
         
         guard let arView = arView else { return }
+        measureLine.measurementBubble.arView = self.arView//need arview for bubble to look at
         
         arView.scene.addAnchor(measureButton)
         measureButton.name = "measureButton"
@@ -106,6 +107,7 @@ class Coordinator {
                 measureButton.addChild(startSphere!)
                 
                 measureLine = MeasureLine(startTransform: Transform(), stopTransform: Transform())
+                measureLine.measurementBubble.arView = self.arView
                 
             }
             
