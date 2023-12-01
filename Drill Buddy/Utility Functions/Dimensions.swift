@@ -8,7 +8,7 @@
 import Foundation
 
 final class FractionalInch: UnitLength {
-//    ⅛ ¼ ⅜ ½ ⅝ ¾ ⅞
+    
     static let inch = FractionalInch(symbol: "\"", converter: UnitConverterLinear(coefficient: 1.0))
     
     static let sevenEighthInch = FractionalInch(symbol: "⅞\"", converter: UnitConverterLinear(coefficient: 0.875))
@@ -24,9 +24,5 @@ final class FractionalInch: UnitLength {
     static let quarterInch = FractionalInch(symbol: "¼\"", converter: UnitConverterLinear(coefficient: 0.25))
     
     static let eighthInch = FractionalInch(symbol: "⅛\"", converter: UnitConverterLinear(coefficient: 0.125))
-    
-//    override class func baseUnit() -> UnitLength {
-//        return UnitLength.inches
-//    }
     
 }
