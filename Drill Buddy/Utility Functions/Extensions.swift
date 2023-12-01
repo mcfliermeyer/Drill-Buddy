@@ -141,8 +141,6 @@ extension Transform {
         
         self.init(matrix: newTransform)
         
-        
-        
     }
     
     init(recentTranslations: [SIMD3<Float>]) {
@@ -167,24 +165,6 @@ extension Transform {
         
     }
     
-}
-
-//let value = 1234.56789
-//let double = floor(value) // 1234.0
-//let integer = Int(double) // 1234
-//let decimal = value.truncatingRemainder(dividingBy: 1) // 0.56789
-
-final class CryptoCurrency: Dimension {
-    static let bitcoin = CryptoCurrency(symbol: "BTC",
-                                        converter: UnitConverterLinear(coefficient: 1.0))
-    static let ethereum = CryptoCurrency(symbol: "ETH",
-                                         converter: UnitConverterLinear(coefficient: 1/15.22))
-    static let tron = CryptoCurrency(symbol: "TRX",
-                                     converter: UnitConverterLinear(coefficient: 1/659943.0))
-    
-    override class func baseUnit() -> CryptoCurrency {
-        return bitcoin
-    }
 }
 
 extension Measurement where UnitType : UnitLength {
