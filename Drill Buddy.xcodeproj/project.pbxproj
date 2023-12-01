@@ -11,7 +11,6 @@
 		B255A26029B42F0800B322B0 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = B255A25F29B42F0800B322B0 /* LICENSE.txt */; };
 		B2591F132AEDFCF400A96082 /* MeasurementBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2591F122AEDFCF400A96082 /* MeasurementBubble.swift */; };
 		B2591F152AF1AE9A00A96082 /* Dimensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2591F142AF1AE9A00A96082 /* Dimensions.swift */; };
-		B2591F172AF9D78500A96082 /* EstimoteProximitySDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2591F162AF9D78500A96082 /* EstimoteProximitySDK.xcframework */; };
 		B2591F1E2AF9DA0A00A96082 /* UWBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2591F1D2AF9DA0A00A96082 /* UWBManager.swift */; };
 		B264D04D2A7AB5500082F141 /* ArchNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B264D04C2A7AB5500082F141 /* ArchNode.swift */; };
 		B264D04F2A7AB59C0082F141 /* ArchNodeQuadrant.swift in Sources */ = {isa = PBXBuildFile; fileRef = B264D04E2A7AB59C0082F141 /* ArchNodeQuadrant.swift */; };
@@ -21,22 +20,22 @@
 		B2780ADE299FA2BB0055BF18 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2780ADD299FA2BB0055BF18 /* Assets.xcassets */; };
 		B2780AE1299FA2BB0055BF18 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2780AE0299FA2BB0055BF18 /* Preview Assets.xcassets */; };
 		B2780AF429A4FF6B0055BF18 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2780AF329A4FF6B0055BF18 /* Extensions.swift */; };
-		B2A41BDE2B06850A000A8610 /* EstimoteUWB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2A41BDC2B068499000A8610 /* EstimoteUWB.framework */; };
-		B2A41BDF2B06850A000A8610 /* EstimoteUWB.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B2A41BDC2B068499000A8610 /* EstimoteUWB.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B2A41BE32B0685B9000A8610 /* UWBManagerExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A41BE22B0685B9000A8610 /* UWBManagerExample.swift */; };
+		B2BB96BF2B1A330800F185BA /* EstimoteUWB.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2BB96BD2B1A32EF00F185BA /* EstimoteUWB.xcframework */; };
+		B2BB96C02B1A330800F185BA /* EstimoteUWB.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B2BB96BD2B1A32EF00F185BA /* EstimoteUWB.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B2D816D72AD458EB00716985 /* MeasureLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D816D62AD458EB00716985 /* MeasureLine.swift */; };
 		B2D816D92AD45D9D00716985 /* TwoDimensionalSphere.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D816D82AD45D9D00716985 /* TwoDimensionalSphere.swift */; };
 		B2D816DC2AD4AE8C00716985 /* MeasureButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D816DB2AD4AE8C00716985 /* MeasureButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		B2591F1C2AF9D83400A96082 /* Embed Frameworks */ = {
+		B2BB96C12B1A330800F185BA /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				B2A41BDF2B06850A000A8610 /* EstimoteUWB.framework in Embed Frameworks */,
+				B2BB96C02B1A330800F185BA /* EstimoteUWB.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -44,7 +43,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		B21A89762AF9E1DC00C7E234 /* iOS-Proximity-SDK-master */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "iOS-Proximity-SDK-master"; path = "../../../Downloads/iOS-Proximity-SDK-master"; sourceTree = "<group>"; };
 		B220369F2A9687CB00ABBE3C /* ArchNodePoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchNodePoint.swift; sourceTree = "<group>"; };
 		B255A25F29B42F0800B322B0 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		B2591F122AEDFCF400A96082 /* MeasurementBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementBubble.swift; sourceTree = "<group>"; };
@@ -62,6 +60,7 @@
 		B2780AF329A4FF6B0055BF18 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		B2A41BDC2B068499000A8610 /* EstimoteUWB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = EstimoteUWB.framework; sourceTree = "<group>"; };
 		B2A41BE22B0685B9000A8610 /* UWBManagerExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UWBManagerExample.swift; sourceTree = "<group>"; };
+		B2BB96BD2B1A32EF00F185BA /* EstimoteUWB.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = EstimoteUWB.xcframework; path = "../../../Downloads/EstimoteUWB - beta 0.2.0 (latest) 2/framework/EstimoteUWB.xcframework"; sourceTree = "<group>"; };
 		B2D816D62AD458EB00716985 /* MeasureLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureLine.swift; sourceTree = "<group>"; };
 		B2D816D82AD45D9D00716985 /* TwoDimensionalSphere.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoDimensionalSphere.swift; sourceTree = "<group>"; };
 		B2D816DB2AD4AE8C00716985 /* MeasureButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureButton.swift; sourceTree = "<group>"; };
@@ -72,21 +71,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B2591F172AF9D78500A96082 /* EstimoteProximitySDK.xcframework in Frameworks */,
+				B2BB96BF2B1A330800F185BA /* EstimoteUWB.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		B213DF5E2AF9DD3F0068E3AA /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				B21A89762AF9E1DC00C7E234 /* iOS-Proximity-SDK-master */,
-			);
-			name = Packages;
-			sourceTree = "<group>";
-		};
 		B255A25E29B42F0800B322B0 /* LICENSE */ = {
 			isa = PBXGroup;
 			children = (
@@ -109,10 +100,11 @@
 		B2780ACD299FA2B90055BF18 = {
 			isa = PBXGroup;
 			children = (
-				B213DF5E2AF9DD3F0068E3AA /* Packages */,
+				B2BB96BD2B1A32EF00F185BA /* EstimoteUWB.xcframework */,
 				B2780AD8299FA2B90055BF18 /* Drill Buddy */,
 				B255A25E29B42F0800B322B0 /* LICENSE */,
 				B2780AD7299FA2B90055BF18 /* Products */,
+				B2BB96BC2B1A32D900F185BA /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -174,6 +166,14 @@
 			path = UWB;
 			sourceTree = "<group>";
 		};
+		B2BB96BC2B1A32D900F185BA /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				B2A41BDC2B068499000A8610 /* EstimoteUWB.framework */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		B2D816D52AD458D100716985 /* Measure Line */ = {
 			isa = PBXGroup;
 			children = (
@@ -203,7 +203,7 @@
 				B2780AD2299FA2B90055BF18 /* Sources */,
 				B2780AD3299FA2B90055BF18 /* Frameworks */,
 				B2780AD4299FA2B90055BF18 /* Resources */,
-				B2591F1C2AF9D83400A96082 /* Embed Frameworks */,
+				B2BB96C12B1A330800F185BA /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
