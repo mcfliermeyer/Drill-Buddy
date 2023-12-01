@@ -10,6 +10,8 @@ import UIKit
 
 class MeasurementBubble: Entity, HasAnchoring {
     
+    var arView: ARView?
+    
     var length: Float = 0.25
     var color: UIColor = .white
     
@@ -84,6 +86,7 @@ class MeasurementBubble: Entity, HasAnchoring {
         let combo = simd_mul(self.transform.matrix, spinBubble * spinBubble2)
         
         self.move(to: combo, relativeTo: nil)
+//        print("combo: \(self.transform.rotation)")
         
         print(self.transform.eulerAngles)
         /*

@@ -9,6 +9,9 @@ import SwiftUI
 import RealityKit
 
 struct ContentView : View {
+    
+    @ObservedObject var uwbManager = UWBManagerExample()
+    
     var body: some View {
         
         return ARViewContainer().edgesIgnoringSafeArea(.all).defersSystemGestures(on: .all)

@@ -21,6 +21,9 @@
 		B2780ADE299FA2BB0055BF18 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2780ADD299FA2BB0055BF18 /* Assets.xcassets */; };
 		B2780AE1299FA2BB0055BF18 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2780AE0299FA2BB0055BF18 /* Preview Assets.xcassets */; };
 		B2780AF429A4FF6B0055BF18 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2780AF329A4FF6B0055BF18 /* Extensions.swift */; };
+		B2A41BDE2B06850A000A8610 /* EstimoteUWB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2A41BDC2B068499000A8610 /* EstimoteUWB.framework */; };
+		B2A41BDF2B06850A000A8610 /* EstimoteUWB.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B2A41BDC2B068499000A8610 /* EstimoteUWB.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B2A41BE32B0685B9000A8610 /* UWBManagerExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A41BE22B0685B9000A8610 /* UWBManagerExample.swift */; };
 		B2D816D72AD458EB00716985 /* MeasureLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D816D62AD458EB00716985 /* MeasureLine.swift */; };
 		B2D816D92AD45D9D00716985 /* TwoDimensionalSphere.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D816D82AD45D9D00716985 /* TwoDimensionalSphere.swift */; };
 		B2D816DC2AD4AE8C00716985 /* MeasureButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D816DB2AD4AE8C00716985 /* MeasureButton.swift */; };
@@ -33,6 +36,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				B2A41BDF2B06850A000A8610 /* EstimoteUWB.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -56,6 +60,8 @@
 		B2780ADD299FA2BB0055BF18 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B2780AE0299FA2BB0055BF18 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B2780AF329A4FF6B0055BF18 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		B2A41BDC2B068499000A8610 /* EstimoteUWB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = EstimoteUWB.framework; sourceTree = "<group>"; };
+		B2A41BE22B0685B9000A8610 /* UWBManagerExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UWBManagerExample.swift; sourceTree = "<group>"; };
 		B2D816D62AD458EB00716985 /* MeasureLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureLine.swift; sourceTree = "<group>"; };
 		B2D816D82AD45D9D00716985 /* TwoDimensionalSphere.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoDimensionalSphere.swift; sourceTree = "<group>"; };
 		B2D816DB2AD4AE8C00716985 /* MeasureButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureButton.swift; sourceTree = "<group>"; };
@@ -123,9 +129,9 @@
 			children = (
 				B2780AD9299FA2B90055BF18 /* Drill_BuddyApp.swift */,
 				B2780ADB299FA2B90055BF18 /* ContentView.swift */,
+				B2A41BE12B06859A000A8610 /* UWB */,
 				B2780AE729A4F7DF0055BF18 /* Custom Views */,
 				B2780AF229A4FF350055BF18 /* Utility Functions */,
-				B2780ADD299FA2BB0055BF18 /* Assets.xcassets */,
 				B2780ADF299FA2BB0055BF18 /* Preview Content */,
 			);
 			path = "Drill Buddy";
@@ -134,6 +140,7 @@
 		B2780ADF299FA2BB0055BF18 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
+				B2780ADD299FA2BB0055BF18 /* Assets.xcassets */,
 				B2780AE0299FA2BB0055BF18 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
@@ -159,6 +166,14 @@
 			path = "Utility Functions";
 			sourceTree = "<group>";
 		};
+		B2A41BE12B06859A000A8610 /* UWB */ = {
+			isa = PBXGroup;
+			children = (
+				B2A41BE22B0685B9000A8610 /* UWBManagerExample.swift */,
+			);
+			path = UWB;
+			sourceTree = "<group>";
+		};
 		B2D816D52AD458D100716985 /* Measure Line */ = {
 			isa = PBXGroup;
 			children = (
@@ -172,8 +187,8 @@
 		B2D816DA2AD4AE6300716985 /* Measure */ = {
 			isa = PBXGroup;
 			children = (
-				B2D816D52AD458D100716985 /* Measure Line */,
 				B2D816DB2AD4AE8C00716985 /* MeasureButton.swift */,
+				B2D816D52AD458D100716985 /* Measure Line */,
 			);
 			path = Measure;
 			sourceTree = "<group>";
@@ -262,6 +277,7 @@
 				B264D04F2A7AB59C0082F141 /* ArchNodeQuadrant.swift in Sources */,
 				B2591F132AEDFCF400A96082 /* MeasurementBubble.swift in Sources */,
 				B2780ADA299FA2B90055BF18 /* Drill_BuddyApp.swift in Sources */,
+				B2A41BE32B0685B9000A8610 /* UWBManagerExample.swift in Sources */,
 				B2D816D72AD458EB00716985 /* MeasureLine.swift in Sources */,
 				B2591F152AF1AE9A00A96082 /* Dimensions.swift in Sources */,
 				B2780AF429A4FF6B0055BF18 /* Extensions.swift in Sources */,
@@ -397,6 +413,10 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Drill Buddy/Preview Content\"";
 				DEVELOPMENT_TEAM = 8W2MLE97FK;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "UWB used for node location";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Using your camera for AR";
@@ -432,6 +452,10 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Drill Buddy/Preview Content\"";
 				DEVELOPMENT_TEAM = 8W2MLE97FK;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "UWB used for node location";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Using your camera for AR";

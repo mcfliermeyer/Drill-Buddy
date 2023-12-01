@@ -58,7 +58,7 @@ class MeasureLine: Entity, HasAnchoring, NSCopying {
         
         self.addChild(lineEntity)
         
-        measurementBubble.billBoard(newStartPosition: startPosition, midpoint: midpoint)
+        measurementBubble.billBoard(newStartPosition: stopPosition, midpoint: midpoint)
         
     }
     
@@ -88,7 +88,7 @@ class MeasureLine: Entity, HasAnchoring, NSCopying {
         copy.stopMeasuring()
         
         copy.measurementBubble.position = self.measurementBubble.position
-        copy.measurementBubble.bubbleText.changeText(text: self.measurementText)
+//        copy.measurementBubble.bubbleText.changeText(text: self.measurementText)
         
         copy.measurementBubble.transform = measurementBubble.transform
         
@@ -121,9 +121,9 @@ class MeasureLine: Entity, HasAnchoring, NSCopying {
         measurementText = formatDistanceString(from: distance)
         
         self.measurementBubble.position = midpoint
-        self.measurementBubble.bubbleText.changeText(text: measurementText)
+//        self.measurementBubble.bubbleText.changeText(text: measurementText)
         
-        measurementBubble.billBoard(newStartPosition: newStartPosition, midpoint: midpoint)
+        measurementBubble.billBoard(newStartPosition: newStopPosition, midpoint: midpoint)
         
         
     }
