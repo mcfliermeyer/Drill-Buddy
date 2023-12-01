@@ -34,9 +34,18 @@ class UWBManagerExample: ObservableObject, EstimoteUWBManagerDelegate {
     }
     
     func didUpdatePosition(for device: EstimoteUWB.EstimoteUWBDevice) {
-        let distance = formatDistanceString(from: device.distance)
+        let distance = device.distance.formatDistanceString()
         print("id: \(device.id)")
         print("distance: \(distance)")
+        guard let vector = device.vector else { return }
+        print("Vector: \(vector)")
+        
+//        need to translate vector to estimated distance left right up down
+//        also lets try to not use estimote library 
+        
+        
+        guard let verticalDirection = device.verticalDirectionEstimate else { return }
+        print("VerticalDirectionEstimate: \(verticalDirection)")
         guard let horizontalAngle = device.horizontalAngle else { return }
         print("angle: \(horizontalAngle))")
         
@@ -53,22 +62,5 @@ class UWBManagerExample: ObservableObject, EstimoteUWBManagerDelegate {
     func didFailToConnect(to device: UWBIdentifiable, error: (Error)?) {
         //
     }
-    
-    func formatDistanceString(from distance: Float) -> String{
-        
-        let meters = Measurement(value: Double(distance), unit: UnitLength.meters)
-        
-        let feetFloorDouble = floor(meters.converted(to: .feet).value)
-        let feet = Measurement(value: feetFloorDouble, unit: UnitLength.feet)
-        
-        let inchFloorDouble = floor((meters - feet).converted(to: .inches).value)
-        let inches = Measurement(value: inchFloorDouble, unit: UnitLength.inches)
-        
-        let decimal = (meters - feet - inches).converted(to: .inches)
-        let fractionalInch = decimal.convertDecimalToFraction()
-        
-        return "\(Int(feet.value))\'\(Int(inches.value))\(fractionalInch.symbol)"
-    }
-    
     
 }

@@ -182,3 +182,23 @@ extension Measurement where UnitType : UnitLength {
     }
     
 }
+
+extension Float {
+    
+    func formatDistanceString() -> String{
+        
+        let meters = Measurement(value: Double(self), unit: UnitLength.meters)
+        
+        let feetFloorDouble = floor(meters.converted(to: .feet).value)
+        let feet = Measurement(value: feetFloorDouble, unit: UnitLength.feet)
+        
+        let inchFloorDouble = floor((meters - feet).converted(to: .inches).value)
+        let inches = Measurement(value: inchFloorDouble, unit: UnitLength.inches)
+        
+        let decimal = (meters - feet - inches).converted(to: .inches)
+        let fractionalInch = decimal.convertDecimalToFraction()
+        
+        return "\(Int(feet.value))\'\(Int(inches.value))\(fractionalInch.symbol)"
+    }
+    
+}
