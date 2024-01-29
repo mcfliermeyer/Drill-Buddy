@@ -12,6 +12,8 @@ class UWBManagerExample: ObservableObject, EstimoteUWBManagerDelegate {
     
     @Published var uwbDevices: [String: EstimoteUWBDevice] = [:]
     private var uwbManager: EstimoteUWBManager?
+    private var vector: Vector?
+    private var distance: Float?
     
     
     var shouldConnectAutomatically: Bool {
@@ -34,21 +36,14 @@ class UWBManagerExample: ObservableObject, EstimoteUWBManagerDelegate {
     }
     
     func didUpdatePosition(for device: EstimoteUWB.EstimoteUWBDevice) {
-        let distance = device.distance.formatDistanceString()
-        print("id: \(device.id)")
-        print("distance: \(distance)")
-        guard let vector = device.vector else { return }
-        print("Vector: \(vector)")
         
-//        need to translate vector to estimated distance left right up down
-//        also lets try to not use estimote library 
+        self.vector = device.vector
+        self.distance = device.distance
         
-        
-        guard let verticalDirection = device.verticalDirectionEstimate else { return }
-        print("VerticalDirectionEstimate: \(verticalDirection)")
-        guard let horizontalAngle = device.horizontalAngle else { return }
-        print("angle: \(horizontalAngle))")
-        
+    }
+    
+    func getVectorAndDistance() -> (Vector?, Float?) {
+        return (self.vector, self.distance)
     }
     
     func didRange(for beacon: EstimoteBLEDevice) {

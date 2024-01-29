@@ -26,25 +26,17 @@ class MeasurementBubble: Entity, HasAnchoring {
         
         let (mesh, material) = self.drawOblongShape(length: 0.15)
         let model = ModelComponent(mesh: try! .generate(from: [mesh]), materials: [material])
-        let collision = CollisionComponent(shapes: [ShapeResource.generateSphere(radius: 0.2/10)])//radius of model is changed during drawing, this scales collision back down to where size of model component
+        let collision = CollisionComponent(shapes: [ShapeResource.generateSphere(radius: 0.2/10)])//radius of model is changed during drawing, this (0.2/10) scales collision back down to where size of model component
         
         self.components[ModelComponent.self] = model
         self.components[CollisionComponent.self] = collision
         
-        
-        /*
-         scale down huge model
-         rotate to horizontal line
-         */
         self.scale = [0.1,0.1,0.1]
-        self.transform.rotation = simd_quatf(angle: 90.toRadian(), axis: SIMD3(0,0,1))
         
         self.addChild(bubbleText)
         
-        let moveTransform = Transform(translation: [-0.18, -0.07, 0.05])
-        let produce = bubbleText.transform.matrix * moveTransform.matrix
-        
-        bubbleText.move(to: produce, relativeTo: self)
+        bubbleText.setPosition(SIMD3(-0.0025, -0.008, -0.015), relativeTo: nil)//x is same width as measureline to prevent horizontal line from covering the text, y and z are positioning for center of bubble
+        bubbleText.transform.rotation = simd_quatf(angle: -90.toRadian(), axis: SIMD3(0,1,0))//text is placed crossing the bubble, rotate y axis to get it square with the bubble
         
     }
     
@@ -61,57 +53,24 @@ class MeasurementBubble: Entity, HasAnchoring {
         
     }
     
-    /*
-     
-     the text is spinning with the node
-     keep the text forward facing
-     
-     */
-    
-    //get the look towards button transform
-    //get the look toward measurenode transform.
-    //maybe set an anchor that stays to the right of Measureline
-    //figure out which tranform info i need to keep the face looking at me
-    //and still keep the oblong bubble inline with the measureline
-    
-    func billBoard(newStartPosition: SIMD3<Float>, midpoint: SIMD3<Float>) {
-        
-        guard let arView = arView else { return }
-        /*
-         get look transform from center of line to first node to get roll transform
-         */
-        self.look(at: newStartPosition, from: midpoint, relativeTo: nil)
-        let lineLook = self.transform.eulerAngles.x * -10
-        print(lineLook)
-        let lineLookTransform = Transform(roll: lineLook)
-        
-        self.look(at: arView.cameraTransform.translation, from: midpoint, relativeTo: nil)
-        let spinBubble = Transform(roll: -270.toRadian())//roll needed to follow measureline
-        let spinBubble2 = Transform(yaw: 180.toRadian())//spins around x vector when measureline goes LtR
-        
-        let combo = self.transform.matrix * spinBubble2.matrix * spinBubble.matrix * lineLookTransform.matrix
-        
-        self.move(to: combo, relativeTo: nil)
-        
-    }
-    
     class MeasurementBubbleText: Entity {
         
         var mesh: MeshResource
         
         let font = UIFont.systemFont(ofSize: 0.15, weight: .medium, width: .compressed)
         
+        var text = ""
+        
         required init(text: String, color: UIColor) {
             
-            mesh = MeshResource.generateText(text, extrusionDepth: 0.001, font: font, alignment: .left)
+            self.text = text
+            mesh = MeshResource.generateText(text, extrusionDepth: 0.001, font: font, alignment: .center)
             
             super.init()
             
             let model = ModelComponent(mesh: mesh, materials: [UnlitMaterial(color: color)])
             
             self.components[ModelComponent.self] = model
-            
-            self.transform.rotation = simd_quatf(angle: -90.toRadian(), axis: SIMD3(0,0,1))
             
         }
         
@@ -121,6 +80,7 @@ class MeasurementBubble: Entity, HasAnchoring {
         
         func changeText(text: String) {
             
+            self.text = text
             let mesh = MeshResource.generateText(text, extrusionDepth: 0.001, font: font, alignment: .left)
             let model = ModelComponent(mesh: mesh, materials: [UnlitMaterial(color: .black)])
             
@@ -144,22 +104,22 @@ class MeasurementBubble: Entity, HasAnchoring {
             
             for i in (0 ..< verticesCount) {
                 
-                let x = round(cos( (Float(i) * triangleAngle).toRadian()) * 100)/1000
-                let y = round(sin( (Float(i) * triangleAngle).toRadian()) * 100)/1000
-                vertex.append([x, y + length, 0])
+                let y = round(cos( (Float(i) * triangleAngle).toRadian()) * 100)/1000
+                let x = round(sin( (Float(i) * triangleAngle).toRadian()) * 100)/1000
+                vertex.append([0, -y, x + length])
                 
             }
-            //x and y have to be reduced to width of new arc line
             
-            vertex.append([0.1, length, 0])
-            vertex.append([-0.1, length, 0])
-            vertex.append([-0.1, 0.0, 0])
-            vertex.append([0.1, 0.0, 0])
+            vertex.append([0, -0.1, length])
+            vertex.append([0, 0.1, length])
+            vertex.append([0, 0.1, 0])
+            vertex.append([0, -0.1, 0])
             
-            vertex.append([0.1, 0, 0])
-            vertex.append([-0.1, 0, 0])
-            vertex.append([-0.1, -length, 0])
-            vertex.append([0.1, -length, 0])
+            vertex.append([0, -0.1, 0])
+            vertex.append([0, 0.1, 0])
+            vertex.append([0, 0.1, -length])
+            vertex.append([0, -0.1, -length])
+            
             
             return vertex
         }//topVertices
@@ -170,9 +130,9 @@ class MeasurementBubble: Entity, HasAnchoring {
             
             for i in (0 ..< verticesCount) {
 
-                let x = round(cos( (Float(i) * triangleAngle).toRadian()) * 100)/1000
-                let y = round(sin( (Float(i) * triangleAngle).toRadian()) * 100)/1000
-                vertex.append([-x, -y + -length, 0])
+                let y = round(cos( (Float(i) * triangleAngle).toRadian()) * 100)/1000
+                let x = round(sin( (Float(i) * triangleAngle).toRadian()) * 100)/1000
+                vertex.append([0, y, -x + -length])
 
             }
             //draw both boxes at end of circle drawings to make drawing points easier to find

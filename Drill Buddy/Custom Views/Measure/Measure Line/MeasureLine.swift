@@ -10,8 +10,19 @@ import UIKit
 
 class MeasureLine: Entity, HasAnchoring, NSCopying {
     
+    var arView: ARView?
+    var coordinatorsArchNode: ArchNode?
+    var lineEntity: ModelEntity = ModelEntity()
+    
     let startSphere = TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white)
     let stopSphere = TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white)
+    
+    var midPoint: SIMD3<Float> {
+        return (startSphere.position + stopSphere.position) / 2
+    }
+    var depth: Float {
+        return simd_distance(startSphere.position, stopSphere.position)
+    }
     
     let measurementBubble = MeasurementBubble(length: 0.15, color: .white)
     
@@ -20,83 +31,79 @@ class MeasureLine: Entity, HasAnchoring, NSCopying {
     
     static var isMeasuring = false
     
-    var measurementText = ""
-    
     init(startTransform: Transform, stopTransform: Transform) {
+        
         super.init()
         
-        let startPosition = startTransform.translation
-        let stopPosition = stopTransform.translation
-        let midpointPosition = (startPosition + stopPosition) / 2
+        self.startSphere.transform = startTransform
+        self.stopSphere.transform = stopTransform
         
-        //set own anchor midpoint
-        self.position = midpointPosition
-        self.look(at: startPosition, from: midpointPosition, relativeTo: nil)
-        startSphere.transform = startTransform
-        stopSphere.transform = stopTransform
+        let startVector = self.startSphere.transform.translation
+        let endVector = self.stopSphere.transform.translation
+        let lengthVector = simd_length(cross(startVector, endVector))
+        let theta = atan2(lengthVector, dot(startVector, endVector))
         
-        mesh = MeshResource.generateBox(width: 0.005, height: 0.005, depth: simd_distance(startPosition, stopPosition))
-        let lineEntity = ModelEntity(mesh: mesh, materials: [lineMaterial])
+        self.setPosition(self.midPoint, relativeTo: nil)
+        
+        let p1minusp2lol = abs(endVector - startVector)
+        let crossProduct = p1minusp2lol
+        
+        mesh = MeshResource.generateBox(width: self.depth, height: 0.005, depth: 0.005)
+        lineEntity = ModelEntity(mesh: mesh, materials: [lineMaterial])
         lineEntity.name = "lineEntity"
         lineEntity.position = .init(x: 0, y: 0, z: 0)
-        
+        lineEntity.orientation = .init(angle: theta, axis: crossProduct)
+        print("init-LE: \(lineEntity.transform)")
         measurementBubble.position.y = 10
-        
+
         lineEntity.addChild(measurementBubble)
-        
         self.addChild(lineEntity)
-        
-        measurementBubble.billBoard(newStartPosition: stopPosition, midpoint: midpointPosition)
-        
     }
     
     func copy(with zone: NSZone? = nil) -> Any {
         
         let copy = MeasureLine(startTransform: self.startSphere.transform, stopTransform: self.stopSphere.transform)
-        
-        let startPosition = self.startSphere.transform.translation
-        let stopPosition = self.stopSphere.transform.translation
-        let midpoint = (startPosition + stopPosition) / 2
-
-        copy.look(at: startPosition, from: midpoint, relativeTo: nil)
-        
-        let mesh = MeshResource.generateBox(width: 0.005, height: 0.005, depth: simd_distance(startPosition, stopPosition))
-        
-        let lineEntity = ModelEntity(mesh: mesh, materials: [copy.lineMaterial])
-        lineEntity.position = .init(x: 0, y: 0, z: 0)
-        
-        copy.addChild(lineEntity)
+        copy.look(at: self.startSphere.position, from: self.midPoint , relativeTo: nil)
         copy.addChild(copy.startSphere)
+        
         copy.stopMeasuring()
-        
-        copy.measurementBubble.position = self.measurementBubble.position
-        copy.measurementBubble.bubbleText.changeText(text: simd_distance(startPosition, stopPosition).formatDistanceString())
-        
+        copy.measurementBubble.bubbleText.changeText(text: self.measurementBubble.bubbleText.text)
         copy.measurementBubble.transform = measurementBubble.transform
         
         return copy
         
     }
     
+    //as the 2DSphere turns, i think the measureline turns as well
+    
     func changeLineTransform(with newStartTransform: Transform, newStopTransform: Transform) {
         
-        let newStartPosition = newStartTransform.translation
-        let newStopPosition = newStopTransform.translation
-        let midpoint = (newStartPosition + newStopPosition) / 2
+        guard let archNode = coordinatorsArchNode else { return }
         
-        self.position = midpoint
-        self.look(at: newStartPosition, from: midpoint, relativeTo: nil)
+        self.startSphere.transform = newStartTransform
+        self.stopSphere.transform = newStopTransform
         
-        startSphere.transform = newStartTransform
-        stopSphere.transform = newStopTransform
+        let startVector = self.startSphere.transform.translation
+        let endVector = self.startSphere.transform.translation - midPoint
+        let lengthVector = simd_length(cross(startSphere.position, archNode.position))
+        let theta = atan2(lengthVector, dot(startVector, endVector))
         
-        let replaceMesh = MeshResource.generateBox(width: 0.005, height: 0.005, depth: simd_distance(newStartPosition, newStopPosition))
+        self.setPosition(self.midPoint, relativeTo: nil)
+        
+        
+        let p1minusp2lol = abs(archNode.position - startSphere.position)
+        let crossProduct = p1minusp2lol
+        print("crossProduct: \(crossProduct)")
+        print("theta: \(theta)")
+        
+        lineEntity.orientation = .init(angle: theta, axis: crossProduct)
+        print(lineEntity.orientation)
+        
+        let replaceMesh = MeshResource.generateBox(width: self.depth, height: 0.005, depth: 0.005)
         let _ = mesh.replaceAsync(with: replaceMesh.contents)
         
-        self.measurementBubble.position = midpoint
-        self.measurementBubble.bubbleText.changeText(text: simd_distance(newStartPosition, newStopPosition).formatDistanceString())
-        
-        measurementBubble.billBoard(newStartPosition: newStopPosition, midpoint: midpoint)
+        self.measurementBubble.bubbleText.changeText(text: self.depth.formatDistanceString())
+        measurementBubble.look(at: newStartTransform.translation, from: self.midPoint, relativeTo: nil)
         
     }
     

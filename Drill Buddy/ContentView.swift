@@ -10,7 +10,7 @@ import RealityKit
 
 struct ContentView : View {
     
-    @ObservedObject var uwbManager = UWBManagerExample()
+//    @ObservedObject var uwbManager = UWBManagerExample()
     
     var body: some View {
         

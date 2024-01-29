@@ -19,7 +19,7 @@
 		B2780ADE299FA2BB0055BF18 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2780ADD299FA2BB0055BF18 /* Assets.xcassets */; };
 		B2780AE1299FA2BB0055BF18 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2780AE0299FA2BB0055BF18 /* Preview Assets.xcassets */; };
 		B2780AF429A4FF6B0055BF18 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2780AF329A4FF6B0055BF18 /* Extensions.swift */; };
-		B2A41BE32B0685B9000A8610 /* UWBManagerExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A41BE22B0685B9000A8610 /* UWBManagerExample.swift */; };
+		B27DE1642B4CD0D600A4B364 /* UWBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27DE1632B4CD0D600A4B364 /* UWBManager.swift */; };
 		B2BB96BF2B1A330800F185BA /* EstimoteUWB.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2BB96BD2B1A32EF00F185BA /* EstimoteUWB.xcframework */; };
 		B2BB96C02B1A330800F185BA /* EstimoteUWB.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B2BB96BD2B1A32EF00F185BA /* EstimoteUWB.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B2D816D72AD458EB00716985 /* MeasureLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D816D62AD458EB00716985 /* MeasureLine.swift */; };
@@ -56,8 +56,8 @@
 		B2780ADD299FA2BB0055BF18 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B2780AE0299FA2BB0055BF18 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B2780AF329A4FF6B0055BF18 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		B27DE1632B4CD0D600A4B364 /* UWBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UWBManager.swift; sourceTree = "<group>"; };
 		B2A41BDC2B068499000A8610 /* EstimoteUWB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = EstimoteUWB.framework; sourceTree = "<group>"; };
-		B2A41BE22B0685B9000A8610 /* UWBManagerExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UWBManagerExample.swift; sourceTree = "<group>"; };
 		B2BB96BD2B1A32EF00F185BA /* EstimoteUWB.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = EstimoteUWB.xcframework; path = "../../../Downloads/EstimoteUWB - beta 0.2.0 (latest) 2/framework/EstimoteUWB.xcframework"; sourceTree = "<group>"; };
 		B2D816D62AD458EB00716985 /* MeasureLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureLine.swift; sourceTree = "<group>"; };
 		B2D816D82AD45D9D00716985 /* TwoDimensionalSphere.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoDimensionalSphere.swift; sourceTree = "<group>"; };
@@ -158,7 +158,7 @@
 		B2A41BE12B06859A000A8610 /* UWB */ = {
 			isa = PBXGroup;
 			children = (
-				B2A41BE22B0685B9000A8610 /* UWBManagerExample.swift */,
+				B27DE1632B4CD0D600A4B364 /* UWBManager.swift */,
 			);
 			path = UWB;
 			sourceTree = "<group>";
@@ -273,11 +273,11 @@
 				B264D04F2A7AB59C0082F141 /* ArchNodeQuadrant.swift in Sources */,
 				B2591F132AEDFCF400A96082 /* MeasurementBubble.swift in Sources */,
 				B2780ADA299FA2B90055BF18 /* Drill_BuddyApp.swift in Sources */,
-				B2A41BE32B0685B9000A8610 /* UWBManagerExample.swift in Sources */,
 				B2D816D72AD458EB00716985 /* MeasureLine.swift in Sources */,
 				B2591F152AF1AE9A00A96082 /* Dimensions.swift in Sources */,
 				B2780AF429A4FF6B0055BF18 /* Extensions.swift in Sources */,
 				B2D816DC2AD4AE8C00716985 /* MeasureButton.swift in Sources */,
+				B27DE1642B4CD0D600A4B364 /* UWBManager.swift in Sources */,
 				B2D816D92AD45D9D00716985 /* TwoDimensionalSphere.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
