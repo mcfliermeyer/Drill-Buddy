@@ -62,8 +62,10 @@ class MeasureLine: Entity, HasAnchoring, NSCopying {
     
     func copy(with zone: NSZone? = nil) -> Any {
         
-        let copy = MeasureLine(startTransform: self.startSphere.transform, stopTransform: self.stopSphere.transform)
-        copy.look(at: self.startSphere.position, from: self.midPoint , relativeTo: nil)
+        guard let archNode = coordinatorsArchNode else { return self }
+        
+        let copy = MeasureLine(startTransform: self.startSphere.transform, stopTransform: archNode.transform)
+        
         copy.addChild(copy.startSphere)
         
         copy.stopMeasuring()
@@ -76,12 +78,11 @@ class MeasureLine: Entity, HasAnchoring, NSCopying {
     
     //as the 2DSphere turns, i think the measureline turns as well
     
-    func changeLineTransform(with newStartTransform: Transform, newStopTransform: Transform) {
+    func changeLineTransform() {
         
         guard let archNode = coordinatorsArchNode else { return }
-        
-        self.startSphere.transform = newStartTransform
-        self.stopSphere.transform = newStopTransform
+
+        self.stopSphere.transform = archNode.transform
         
         let startVector = self.startSphere.transform.translation
         let endVector = self.startSphere.transform.translation - midPoint
@@ -103,17 +104,19 @@ class MeasureLine: Entity, HasAnchoring, NSCopying {
         let _ = mesh.replaceAsync(with: replaceMesh.contents)
         
         self.measurementBubble.bubbleText.changeText(text: self.depth.formatDistanceString())
-        measurementBubble.look(at: newStartTransform.translation, from: self.midPoint, relativeTo: nil)
+        measurementBubble.look(at: startSphere.position, from: self.midPoint, relativeTo: nil)
         
     }
     
     func startMeasuring() {
         MeasureLine.isMeasuring = true
+        startSphere.scale = SIMD3(x: 0.6, y: 0.6, z: 0.6)
         self.addChild(startSphere)
     }
     
     func stopMeasuring() {
         MeasureLine.isMeasuring = false
+        stopSphere.scale = SIMD3(x: 0.6, y: 0.6, z: 0.6)
         self.addChild(stopSphere)
     }
     

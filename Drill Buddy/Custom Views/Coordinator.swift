@@ -24,24 +24,19 @@ class Coordinator {
     var archNode: ArchNode?
     var raycastResults: [matrix_float4x4] = []
     var recentCameraPositions: [SIMD3<Float>] = []
-    var startSphere, stopSphere: TwoDimensionalSphere?
+    let startSphere = TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white)
+    let stopSphere = TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white)
     var measureButton = MeasureButton(radius: 0.25, color: .white, lineWidth: 0.05)
     var measureLine: MeasureLine?
     
     func setupUI() {
         
         guard let arView = arView else { return }
-        guard let archNode = archNode else { return }
         
         arView.scene.addAnchor(measureButton)
         measureButton.name = "measureButton"
-        startSphere = TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white)
-        measureButton.addChild(startSphere!)
         
-        measureLine = MeasureLine(startTransform: startSphere!.transform, stopTransform: archNode.transform)
-        measureLine!.arView = self.arView//need to access arview for line to look at
-        measureLine!.measurementBubble.arView = self.arView//need arview for bubble to look at
-        measureLine!.coordinatorsArchNode = self.archNode
+        measureButton.addChild(startSphere)
         
         sceneObserver = arView.scene.subscribe(to: SceneEvents.Update.self) { [unowned self] in self.updateScene(on: $0) }
         archNodeObserver = arView.scene.subscribe(to: SceneEvents.Update.self) { [unowned self] in self.updateArchNode(on: $0) }
@@ -87,10 +82,8 @@ class Coordinator {
         
         guard MeasureLine.isMeasuring else { return }
         //if currently measuring, update line transform
-        self.measureLine!.changeLineTransform(with: startSphere!.transform, newStopTransform: archNode.transform)
+        self.measureLine!.changeLineTransform()
         
-        
-
     }
     
     func animationsCompleted(on event: AnimationEvents.PlaybackCompleted) {
@@ -102,35 +95,38 @@ class Coordinator {
         //we also test to make sure its the sphere animation completing
         guard event.playbackController == self.measureButtonPressAnimationController else { return }
         guard let arView = arView else { return }
+        guard let archNode = archNode else { return }
         
         let generator = UIImpactFeedbackGenerator(style: .soft)
         generator.impactOccurred()
         
-        if MeasureLine.isMeasuring == false {//start measuring
+        if MeasureLine.isMeasuring == false {//if not measuring lets start measuring
             
+            measureLine = MeasureLine(startTransform: startSphere.transform, stopTransform: archNode.transform)
+            measureLine!.arView = self.arView//need to access arview for line to look at
+            measureLine!.measurementBubble.arView = self.arView//need arview for bubble to look at
+            measureLine!.coordinatorsArchNode = self.archNode
             measureLine!.startMeasuring()
-            arView.scene.addAnchor(measureLine!)
-            arView.scene.removeAnchor(startSphere!)
             
-            stopSphere = TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white)
-            measureButton.addChild(stopSphere!)
+            arView.scene.addAnchor(measureLine!)
+            arView.scene.removeAnchor(startSphere)//we can remove this sphere because measureline has one
+            
+            measureButton.addChild(stopSphere)
             
         }
         else {//we end measuring
             
-            self.measureLine!.changeLineTransform(with: startSphere!.transform, newStopTransform: stopSphere!.transform)
+            self.measureLine!.changeLineTransform()
             measureLine!.stopMeasuring()
             
             let line = measureLine!.copy() as! MeasureLine
             arView.scene.addAnchor(line)
             
-            arView.scene.removeAnchor(startSphere!)
-            arView.scene.removeAnchor(stopSphere!)
+            arView.scene.removeAnchor(startSphere)
+            arView.scene.removeAnchor(stopSphere)
             arView.scene.removeAnchor(measureLine!)
-            stopSphere = nil
             
-            startSphere = TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white)
-            measureButton.addChild(startSphere!)
+            measureButton.addChild(startSphere)
             
             measureLine = MeasureLine(startTransform: Transform(), stopTransform: Transform())
             measureLine!.measurementBubble.arView = self.arView
@@ -142,10 +138,8 @@ class Coordinator {
     @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
         
         guard let touchInView = sender?.location(in: arView) else { return }
-        
         guard let arView = arView else { return }
-        
-        guard let sphere = arView.entity( at: touchInView) as? TwoDimensionalSphere else { return }
+        guard let sphere = arView.entity(at: touchInView) as? TwoDimensionalSphere else { return }
         
         //remove from button and add to scene to move into position
         sphere.removeFromParent()
