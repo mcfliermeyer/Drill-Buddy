@@ -70,16 +70,6 @@ class Coordinator {
     
     func updateScene(on event: SceneEvents.Update) {
         
-        guard let archNode = archNode else { return }
-//        let (vector, distance) = uwbManager.getVectorAndDistance()
-//        let x = vector?.x.formatDistanceString()
-//        let y = vector?.y.formatDistanceString()
-//        let formattedDistance = distance?.formatDistanceString()
-////        let z = vector.z.formatDistanceString()
-//        print("left or right about \(x ?? "zero")")
-//        print("up or down about \(y ?? "zero")")
-//        print("forward about \(formattedDistance ?? "zero")")
-        
         guard MeasureLine.isMeasuring else { return }
         //if currently measuring, update line transform
         self.measureLine!.changeLineTransform()
