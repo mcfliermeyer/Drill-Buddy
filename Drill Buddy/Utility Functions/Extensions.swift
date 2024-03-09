@@ -143,6 +143,28 @@ extension Transform {
         
     }
     
+    init(recentMeasureBubbles transforms: [matrix_float4x4]) {
+        //pull out most recent 20 positions and create Transform
+        let translations = transforms.map({$0.translation}).suffix(10)
+        let translationsAverage = translations.reduce(SIMD3<Float>.zero, {$0 + $1} ) / Float(translations.count)
+        let translationTranform = Transform(translation: translationsAverage)
+        
+        //pull out most recent 80 orientations (quatf) and create Transform
+        let orientations = transforms.map({$0.orientation}).suffix(80)
+        let anglesAverage = orientations.map({$0.angle}).reduce(0.0, {$0 + $1} ) / Float(orientations.count)
+        let axisAverage = orientations.map({$0.axis}).reduce(SIMD3<Float>.zero, {$0 + $1}) / Float(orientations.count)
+        let averageOrientationQauternion = simd_quatf(angle: anglesAverage, axis: axisAverage)
+        var orientationTransform = Transform(rotation: averageOrientationQauternion)
+        //flip node to face camera
+//        orientationTransform.rotation *= simd_quatf(angle: 270.toRadian(), axis: SIMD3<Float>(1,0,0))
+        
+        //multiply both transform matrices
+        let newTransform = translationTranform.matrix * orientationTransform.matrix
+        
+        self.init(matrix: newTransform)
+        
+    }
+    
     init(recentTranslations: [SIMD3<Float>]) {
         
         let avgVector = recentTranslations.reduce( SIMD3<Float>.zero, {$0 + $1} ) / Float(recentTranslations.count)

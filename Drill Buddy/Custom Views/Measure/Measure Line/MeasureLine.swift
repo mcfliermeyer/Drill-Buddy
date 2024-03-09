@@ -14,7 +14,7 @@ class MeasureLine: Entity, HasAnchoring, NSCopying {
     var coordinatorsArchNode: ArchNode?
     var lineEntity: ModelEntity = ModelEntity()
     var lineLookAnchor = AnchorEntity()
-    var cameraLookAnchor = AnchorEntity()
+    var recentLineLookAnchors: [matrix_float4x4] = []
     
     let startSphere = TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white)
     let stopSphere = TwoDimensionalSphere(triangleDetailCount: 50, radius: 0.2, color: .white)
@@ -34,7 +34,7 @@ class MeasureLine: Entity, HasAnchoring, NSCopying {
     }
     var height: Float = 0.005
     
-    let measurementBubble = MeasurementBubble(length: 0.15, color: .white)
+    let measurementBubble = MeasurementBubble(color: .white)
     
     var mesh: MeshResource = .generateSphere(radius: 0)
     let lineMaterial = UnlitMaterial(color: .white.withAlphaComponent(0.5))
@@ -42,25 +42,24 @@ class MeasureLine: Entity, HasAnchoring, NSCopying {
     static var isMeasuring = false
     
     init(startTransform: Transform, stopTransform: Transform) {
-        
         super.init()
         
         self.startSphere.transform = startTransform
         self.stopSphere.transform = stopTransform
         let worldPositionMidpoint = (stopTransform.translation + startTransform.translation) / 2
         
-        self.setPosition(worldPositionMidpoint, relativeTo: nil)
-        
         mesh = MeshResource.generateBox(width: width, height: height, depth: depth)
         lineEntity = ModelEntity(mesh: mesh, materials: [lineMaterial])
         lineEntity.name = "lineEntity"
         lineEntity.position = measureLineMiddlePosition
         lineEntity.setOrientation(simd_quatf(from: startSphere.position(relativeTo: self), to: measureLineMiddlePosition), relativeTo: self)
-        lineLookAnchor.setScale(SIMD3(x: 0.1, y: 0.1, z: 0.1), relativeTo: nil)
+//        lineLookAnchor.setScale(SIMD3(x: 0.1, y: 0.1, z: 0.1), relativeTo: nil)
+        
         self.addChild(measurementBubble)
         self.addChild(lineEntity)
         self.addChild(lineLookAnchor)
-        self.addChild(cameraLookAnchor)
+        self.setPosition(worldPositionMidpoint, relativeTo: nil)
+        
     }
     
     func copy(with zone: NSZone? = nil) -> Any {
@@ -72,10 +71,10 @@ class MeasureLine: Entity, HasAnchoring, NSCopying {
         copy.addChild(copy.startSphere)
         copy.transform = self.transform
         copy.lineEntity.transform = self.lineEntity.transform
+        copy.measurementBubble.transform = self.measurementBubble.transform
+        copy.measurementBubble.bubbleText.changeText(text: self.measurementBubble.bubbleText.text)
         
         copy.stopMeasuring()
-        copy.measurementBubble.bubbleText.changeText(text: self.measurementBubble.bubbleText.text)
-        copy.measurementBubble.transform = measurementBubble.transform
         
         return copy
         
@@ -84,6 +83,7 @@ class MeasureLine: Entity, HasAnchoring, NSCopying {
     func changeLineTransform() {
         
         guard let archNode = coordinatorsArchNode else { return }
+        guard let arView = arView else { return }
         
         self.stopSphere.transform = archNode.transform//needed for line copy for multiple lines
         let stopLine = self.stopSphere.position(relativeTo: self)
@@ -107,25 +107,49 @@ class MeasureLine: Entity, HasAnchoring, NSCopying {
             lineLookAnchor.transform.rotation *= simd_quatf(angle: 180.toRadian(), axis: SIMD3(x: 0, y: 0, z: 1))
             lineLookAnchor.transform.rotation *= simd_quatf(angle: 180.toRadian(), axis: SIMD3(x: 1, y: 0, z: 0))
         }
-        measurementBubble.move(to: lineLookAnchor.transform, relativeTo: nil, duration: 0.1)
+        recentLineLookAnchors.append(lineLookAnchor.transform.matrix)
+        recentLineLookAnchors = recentLineLookAnchors.suffix(5)
+        measurementBubble.move(to: Transform(recentMeasureBubbles: recentLineLookAnchors), relativeTo: nil)
         //X:1 as upvector = when +Y the bubble is flipped
         //Y:1 as upvector = when -X the bubble is flipped
         
         let replaceMesh = MeshResource.generateBox(width: width, height: height, depth: depth)
         let _ = mesh.replaceAsync(with: replaceMesh.contents)
         
+        let scale = scaleBasedOnDistance(cameraTransform: arView.cameraTransform)
+        measurementBubble.scale = [scale,scale,scale]
     }
     
     func startMeasuring() {
         MeasureLine.isMeasuring = true
         startSphere.scale = SIMD3(x: 0.6, y: 0.6, z: 0.6)
         self.addChild(startSphere)
+        
+        //below animation helps remove the flash from bubble flying in front of POV
+        var tempBubbleTransformFrom = Transform(matrix: startSphere.transformMatrix(relativeTo: self))
+        let tempBubbleTransformTo = Transform(matrix: lineLookAnchor.transformMatrix(relativeTo: self))
+        tempBubbleTransformFrom.scale = [0,0,0]
+
+        let bubbleAnimationDef = FromToByAnimation(from: tempBubbleTransformFrom, to: tempBubbleTransformTo, bindTarget: .transform)
+        let bubbleAnimationView = AnimationView(source: bubbleAnimationDef, speed: 5)
+        let bubbleAnimationRes = try! AnimationResource.generate(with: bubbleAnimationView)
+        
+        self.measurementBubble.playAnimation(bubbleAnimationRes)
     }
     
     func stopMeasuring() {
         MeasureLine.isMeasuring = false
         stopSphere.scale = SIMD3(x: 0.6, y: 0.6, z: 0.6)
         self.addChild(stopSphere)
+    }
+    
+    private func scaleBasedOnDistance(cameraTransform: Transform) -> Float {
+        let distanceFromCamera = simd_length(self.position(relativeTo: nil) - cameraTransform.translation)
+        if distanceFromCamera < 0.7 {
+            return distanceFromCamera / 0.4
+        } else {
+            return 0.35 * distanceFromCamera + 0.825
+        }
     }
     
     @MainActor required init() {

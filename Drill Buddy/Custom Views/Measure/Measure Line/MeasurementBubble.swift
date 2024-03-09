@@ -12,59 +12,48 @@ class MeasurementBubble: Entity, HasAnchoring {
     
     var arView: ARView?
     
-    var length: Float = 0.25
+    var length: Float = 0.015
     var color: UIColor = .white
     
     var bubbleText = MeasurementBubbleText(text: "Flooof", color: .black)
     
-    init(length: Float, color: UIColor) {
+    init(color: UIColor) {
         
-        self.length = length
         self.color = color
         
         super.init()
         
-        let (mesh, material) = self.drawOblongShape(length: 0.15)
+        let (mesh, material) = self.drawOblongShape(length: self.length)
         let model = ModelComponent(mesh: try! .generate(from: [mesh]), materials: [material])
         let collision = CollisionComponent(shapes: [ShapeResource.generateSphere(radius: 0.2/10)])//radius of model is changed during drawing, this (0.2/10) scales collision back down to where size of model component
         
         self.components[ModelComponent.self] = model
         self.components[CollisionComponent.self] = collision
         
-        self.scale = [0.1,0.1,0.1]
-        
         self.addChild(bubbleText)
         
-        bubbleText.setPosition(SIMD3(-0.0025, -0.008, -0.015), relativeTo: nil)//x is same width as measureline to prevent horizontal line from covering the text, y and z are positioning for center of bubble
+        bubbleText.setPosition(SIMD3(-0.0025, -0.007, -0.019), relativeTo: self)//x is same width as measureline to prevent horizontal line from covering the text, Z is what normal X axis. negative to go left KEKW
         bubbleText.transform.rotation = simd_quatf(angle: -90.toRadian(), axis: SIMD3(0,1,0))//text is placed crossing the bubble, rotate y axis to get it square with the bubble
         
     }
     
     @MainActor required init() {
-        
+        //this one doesnt seem to be used
         super.init()
-        
-        let (mesh, material) = self.drawOblongShape(length: 0.15)
-        let model = ModelComponent(mesh: try! .generate(from: [mesh]), materials: [material])
-        let collision = CollisionComponent(shapes: [ShapeResource.generateSphere(radius: 0.2/10)])//radius is changed during drawing, this scales it back down
-        
-        self.components[ModelComponent.self] = model
-        self.components[CollisionComponent.self] = collision
-        
     }
     
     class MeasurementBubbleText: Entity {
         
         var mesh: MeshResource
         
-        let font = UIFont.systemFont(ofSize: 0.15, weight: .medium, width: .compressed)
+        let font = UIFont.systemFont(ofSize: 0.015, weight: .medium, width: .compressed)
         
         var text = ""
         
         required init(text: String, color: UIColor) {
             
             self.text = text
-            mesh = MeshResource.generateText(text, extrusionDepth: 0.001, font: font, alignment: .center)
+            mesh = MeshResource.generateText(text, extrusionDepth: 0.001, font: font, containerFrame: CGRect.zero, alignment: .center)
             
             super.init()
             
@@ -81,7 +70,7 @@ class MeasurementBubble: Entity, HasAnchoring {
         func changeText(text: String) {
             
             self.text = text
-            let mesh = MeshResource.generateText(text, extrusionDepth: 0.001, font: font, alignment: .left)
+            let mesh = MeshResource.generateText(text, extrusionDepth: 0.001, font: font, containerFrame: CGRect.zero, alignment: .center)
             let model = ModelComponent(mesh: mesh, materials: [UnlitMaterial(color: .black)])
             
             self.components[ModelComponent.self] = model
@@ -104,21 +93,21 @@ class MeasurementBubble: Entity, HasAnchoring {
             
             for i in (0 ..< verticesCount) {
                 
-                let y = round(cos( (Float(i) * triangleAngle).toRadian()) * 100)/1000
-                let x = round(sin( (Float(i) * triangleAngle).toRadian()) * 100)/1000
+                let y = round(cos( (Float(i) * triangleAngle).toRadian()) * 100)/10000
+                let x = round(sin( (Float(i) * triangleAngle).toRadian()) * 100)/10000
                 vertex.append([0, -y, x + length])
                 
             }
+            let scaleNumber: Float = 0.01
+            vertex.append([0, -scaleNumber, length])
+            vertex.append([0, scaleNumber, length])
+            vertex.append([0, scaleNumber, 0])
+            vertex.append([0, -scaleNumber, 0])
             
-            vertex.append([0, -0.1, length])
-            vertex.append([0, 0.1, length])
-            vertex.append([0, 0.1, 0])
-            vertex.append([0, -0.1, 0])
-            
-            vertex.append([0, -0.1, 0])
-            vertex.append([0, 0.1, 0])
-            vertex.append([0, 0.1, -length])
-            vertex.append([0, -0.1, -length])
+            vertex.append([0, -scaleNumber, 0])
+            vertex.append([0, scaleNumber, 0])
+            vertex.append([0, scaleNumber, -length])
+            vertex.append([0, -scaleNumber, -length])
             
             
             return vertex
@@ -130,8 +119,8 @@ class MeasurementBubble: Entity, HasAnchoring {
             
             for i in (0 ..< verticesCount) {
 
-                let y = round(cos( (Float(i) * triangleAngle).toRadian()) * 100)/1000
-                let x = round(sin( (Float(i) * triangleAngle).toRadian()) * 100)/1000
+                let y = round(cos( (Float(i) * triangleAngle).toRadian()) * 100)/10000
+                let x = round(sin( (Float(i) * triangleAngle).toRadian()) * 100)/10000
                 vertex.append([0, y, -x + -length])
 
             }
